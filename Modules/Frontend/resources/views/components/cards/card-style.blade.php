@@ -4,6 +4,7 @@
     <div class="block-images position-relative w-100">
         <div class="video-and-image-block">
                 <div class="img-box w-100">
+                    <!-- added movid id -->
                     <a href="/movie-detail/{{ $movieId ?? '' }}" class="position-absolute top-0 bottom-0 start-0 end-0"></a>
                     <img src="{{ $cardImage }}" alt="movie-card" class="img-fluid object-cover w-100  border-0"
                         loading="lazy" />
