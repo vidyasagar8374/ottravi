@@ -1,4 +1,4 @@
-name: Deploy to Server
+name: Deploy to Hostinger
 
 on:
   push:
@@ -10,16 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    # Step 1: Checkout the repository code
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.HOSTINGER_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Deploy to server
-        run: |
-          ssh -o StrictHostKeyChecking=no -p 22 ${{ secrets.HOSTINGER_USER }}@${{ secrets.HOSTINGER_HOST }} "cd /home/${{ secrets.HOSTINGER_USER }}/public_html/OTT && git pull origin main && ./deploy_script.sh"
+    # Step 2: Deploy to Hostinger using FTP
+    - name: FTP Deploy
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.0
+      with:
+        server: ${{ secrets.FTP_SERVER }}       # FTP server address (Hostinger's FTP address)
+        username: ${{ secrets.FTP_USERNAME }}   # FTP username
+        password: ${{ secrets.FTP_PASSWORD }}   # FTP password
+        protocol: ftp                           # Use FTP protocol
+        local-dir: ./                           # Local directory to deploy
+        server-dir: /public_html/OTT/           # Remote server directory for deployment
+        log-level: standard                     # Log level (optional, useful for debugging)
