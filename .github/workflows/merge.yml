@@ -1,34 +1,23 @@
-name: Merge via SSH
+name: Deploy to Server
 
 on:
   push:
     branches:
-      - main  # Trigger the workflow on push to main branch
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout code
-        uses: actions/checkout@v3
-      
-      # Step 2: Set up SSH
+        uses: actions/checkout@v2
+
       - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to server
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.HOSTINGER_HOST }} >> ~/.ssh/known_hosts
-      
-      # Step 3: SSH into the remote server and merge the branch
-      - name: Merge via SSH on Hostinger
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.HOSTINGER_USER }}@${{ secrets.HOSTINGER_HOST }} << 'EOF'
-            cd ~/public_html/OTT/ || exit 1  # Change to your repo directory
-            git checkout main || exit 1
-            git pull origin main || exit 1
-            git merge feature-branch || exit 1
-            git push origin main || exit 1
-          EOF
+          ssh -o StrictHostKeyChecking=no -p 22 ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOSTNAME }} "cd /home/${{ secrets.SSH_USERNAME }}/public_html/OTT && git pull origin main && ./deploy_script.sh"
