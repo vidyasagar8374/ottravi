@@ -3,22 +3,13 @@
 <div class="iq-card card-hover">
     <div class="block-images position-relative w-100">
         <div class="video-and-image-block">
-                <div class="img-box w-100">
-                    <!-- added movid id -->
-                    <a href="/movie-detail/{{ $movieId ?? '' }}" class="position-absolute top-0 bottom-0 start-0 end-0"></a>
-                    <img src="{{ $cardImage }}" alt="movie-card" class="img-fluid object-cover w-100  border-0"
-                        loading="lazy" />
-                </div>
-        
-             <!-- Hidden YouTube video that shows on hover -->
-                  <!-- Hidden YouTube video that shows on hover -->
-                <div class="video-box position-absolute top-0 bottom-0 start-0 end-0 w-100">
-                    <video autoplay muted loop>
-                        <source src="{{  $videoUrl ?? ''  }}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>  
+        <div class="img-box w-100">
+        <a href="{{ url('/movie-detail/' . ($movieId ?? '')) }}" class="position-absolute top-0 bottom-0 start-0 end-0"></a>
+        <img src="{{ $cardImage }}" alt="movie-card" class="img-fluid object-cover w-100  border-0" loading="lazy" />
+        </div>
+ 
          </div>
+
 
         <div class="card-description with-transition">
             <div class="cart-content">
@@ -97,60 +88,5 @@
         </div>
     </div>
 </div>
-<!-- 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Flag to prevent multiple alerts on repeated hover
-        let isLoading = false;
 
-        $('.block-images').hover(
-            function() {
-                // Prevent further triggering if already in process
-                if (isLoading) return;
 
-                // Mark the hover event as in progress
-                isLoading = true;
-
-                // Trigger the alert once
-                alert('Please wait');
-
-                const block = $(this);
-
-                // AJAX call
-                $.ajax({
-                    url: '/get-video-url', // Define your route here
-                    method: 'GET',
-                    success: function(response) {
-                        // Check if video-box is already appended
-                        if (block.find('.video-box').length === 0) {
-                            block.append(`
-                                <div class="video-box position-absolute top-0 bottom-0 start-0 end-0 w-100">
-                                    <video autoplay muted loop>
-                                        <source src="${response.videoUrl}" type="video/mp4">
-                                        Your browser does not support the video tag.
-                                    </video>
-                                </div>
-                            `);
-                        }
-                        // Hide the img-box
-                        block.find('.img-box').hide();
-
-                        // Allow re-triggering hover after AJAX completes
-                        isLoading = false;
-                    },
-                    error: function() {
-                        // In case of error, re-enable hover again
-                        isLoading = false;
-                    }
-                });
-            },
-            function() {
-                // Mouse leave: remove the video-box and show img-box again
-                const block = $(this);
-                block.find('.video-box').remove();
-                block.find('.img-box').show();
-            }
-        );
-    });
-</script> -->

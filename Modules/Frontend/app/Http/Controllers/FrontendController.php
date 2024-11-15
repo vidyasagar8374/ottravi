@@ -30,7 +30,9 @@ class FrontendController extends Controller
     }
     public function getVideoDetails(Request $request)
 {
+
     $movieId = Crypt::decrypt($request->movieId);
+    //  dd($movieId);
     $movie = Movie::find($movieId);
 
     if ($movie) {
@@ -92,7 +94,7 @@ class FrontendController extends Controller
             $ottdetails = '';
             if($movie){
                 $ottdetails = Movie::with('ottdetails.ott')->where('id',$id)->get();
-                // dd($ottdetails);
+                //  dd($ottdetails);
             }
             $userpurchasedetails = UserPurchaseMovie::get();
             

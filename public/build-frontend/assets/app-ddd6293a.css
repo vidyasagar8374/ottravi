@@ -22125,19 +22125,35 @@ pre[class*="language-"] {
 
 /* card video */
 /* Show video and card description on hover */
-.img-box:hover .img-box img {
+/* .img-box:hover .img-box img {
     display: none;
 }
 .video-box{
     display: none;
 }
-.video-box video{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+
 .block-images:hover .video-box
 {
     display: block;
    
+} */
+.modal-hotspot {
+    max-width: 400px; /* Set maximum width of modal */
+    max-height: 400px; /* Set maximum height of modal */
+}
+
+.modal-hotspot .modal-content {
+    border-radius: 8px; /* Rounded corners */
+}
+
+.modal-hotspot .modal-body {
+    padding: 10px; /* Small padding around video */
+}
+
+.video-container video {
+    width: 100%; /* Make video take up full width of modal */
+    height: auto;
+}
+.ott-list-block img{
+    position: relative !important; 
 }
