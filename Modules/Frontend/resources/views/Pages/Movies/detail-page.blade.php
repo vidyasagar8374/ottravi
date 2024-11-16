@@ -1,7 +1,6 @@
 @extends('frontend::layouts.master', ['isSwiperSlider' => true, 'isVideoJs' => true, 'bodyClass' => 'custom-header-relative', 'isSelect2' => true])
 
 @section('content')
-<h1>sagar M</h1>
     <div class="iq-main-slider site-video">
         <div class="container-fluid">
             <div class="row">
