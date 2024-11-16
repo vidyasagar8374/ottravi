@@ -88,7 +88,7 @@ $(document).ready(function () {
                         console.error("Error fetching video:", error);
                     }
                 });
-            }, 300); // Add delay to avoid unnecessary requests
+            }, 3000); // Add delay to avoid unnecessary requests
         });
 
         $this.on('mouseleave', function () {
