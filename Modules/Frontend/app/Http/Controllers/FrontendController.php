@@ -2,6 +2,7 @@
 
 namespace Modules\Frontend\app\Http\Controllers;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use Razorpay\Api\Api;
@@ -14,6 +15,7 @@ use App\Models\ottList;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -94,29 +96,77 @@ public function updateplaytrack(Request $request)
     }
 }
 
-public function store(Request $request) {
+
+
+public function store(Request $request)
+{
     $input = $request->all();
-    $api = new Api (env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
-    $payment = $api->payment->fetch($input['razorpay_payment_id']);
-    if(count($input) && !empty($input['razorpay_payment_id'])) {
-        try {
-            $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount' => $payment['amount']));
-            $payment = Payment::create([
-                'r_payment_id' => $response['id'],
-                'method' => $response['method'],
-                'currency' => $response['currency'],
-                'user_email' => $response['email'],
-                'amount' => $response['amount']/100,
-                'json_response' => json_encode((array)$response)
-            ]);
-        } catch(Exceptio $e) {
-            return $e->getMessage();
-            Session::put('error',$e->getMessage());
-            return redirect()->back();
-        }
+    
+    // Check if Razorpay payment ID is provided
+    if (empty($input['razorpay_payment_id'])) {
+        Session::put('error', 'Payment ID is missing.');
+        return redirect()->back();
     }
-    Session::put('success',('Payment Successful'));
-    return redirect()->back();
+
+    $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+
+    try {
+        // Start database transaction
+        DB::beginTransaction();
+
+        $payment = $api->payment->fetch($input['razorpay_payment_id']);
+        $movieId = $payment->notes['movie_id'];
+
+        $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount' => $payment['amount']));
+
+
+        $paymentRecord = Payment::create([
+            'r_payment_id' => $response['id'],
+            'method' => $response['method'],
+            'currency' => $response['currency'],
+            'user_email' => $response['email'],
+            'amount' => $response['amount'] / 100, 
+            'json_response' => json_encode((array) $response)
+        ]);
+
+        if (!$paymentRecord) {
+            throw new \Exception('Failed to save payment record.');
+        }
+
+        $movie = Movie::find($movieId);
+        if (!$movie) {
+            throw new \Exception('Movie not found.');
+        }
+
+        $insertpurchase = UserPurchaseMovie::create([
+            'user_id' => auth()->user()->id,
+            'movie_id' => $movie->id,
+            'is_active' => 1,
+            'purchase_date' => Carbon::now(), // Current date and time
+            'expire_date' => Carbon::now()->addMonth(), // One month from now
+            'total_length' => 0,
+            'paused_length' => 0
+        ]);
+        // dd($insertpurchase);
+        if (!$insertpurchase) {
+            throw new \Exception('Failed to create movie purchase.');
+        }
+
+
+        DB::commit();
+
+        // Success message
+      
+        return redirect()->back()->with('success', 'Payment successful!');
+
+    } catch (\Exception $e) {
+        // Rollback the transaction if any exception occurs
+        DB::rollBack();
+
+
+        Session::put('error', $e->getMessage());
+        return redirect()->back();
+    }
 }
 
 

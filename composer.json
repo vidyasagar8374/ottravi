@@ -12,6 +12,7 @@
         "laravel/socialite": "^5.10",
         "laravel/tinker": "^2.8",
         "laravelcollective/html": "^6.4",
+        "nesbot/carbon": "^2.72",
         "nwidart/laravel-modules": "^10.0",
         "razorpay/razorpay": "^2.9",
         "spatie/laravel-medialibrary": "^10.0.0",

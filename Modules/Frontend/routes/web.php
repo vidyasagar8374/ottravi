@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Frontend\app\Http\Controllers\FrontendController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,7 +29,7 @@ Route::group([], function () {
     Route::get('/movie-detail/{id}', [FrontendController::class, 'movie_detail'])->name('frontend.movie_detail');
     Route::any('/updateplaytrack', [FrontendController::class, 'updateplaytrack'])->name('frontend.updateplaytrack');
     // payment routes
-    Route::get('/initiate-payment/{id}', [FrontendController::class, 'initiate_payment'])->name('frontend.initiate-payment');
+    Route::get('/initiate-payment/{id}', [FrontendController::class, 'initiate_payment'])->name('frontend.initiate-payment')->middleware('auth');
     Route::post('razorpay-payment',[FrontendController::class,'store'])->name('razorpay.payment.store');
 
     Route::get('/resticted', [FrontendController::class, 'resticted'])->name('frontend.resticted');

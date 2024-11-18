@@ -24,7 +24,7 @@
     <div class="row justify-content-start">
         @if($movie->getticket)
         <div class="col-auto">
-        <a href="{{ url('/initiate-payment/' . Crypt::encrypt($movie->id)) }}" target="_blank">
+        <a href="{{ url('/initiate-payment/' . Crypt::encrypt($movie->id)) }}">
                 <button id="rzp-button" type="button" class="btn btn-outline-secondary">Get Tickets</button>
             </a>
 
