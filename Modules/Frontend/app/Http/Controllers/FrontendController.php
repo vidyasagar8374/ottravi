@@ -11,6 +11,8 @@ use App\Models\HomeCategory;
 use App\Models\UserPurchaseMovie;
 use App\Models\ottdataList;
 use App\Models\ottList;
+use App\Models\Payment;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Crypt;
 
 
