@@ -4,6 +4,7 @@ namespace Modules\Frontend\app\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
+use Razorpay\Api\Api;
 use App\Models\Movie;
 use App\Models\HomeCategoryMovie;
 use App\Models\HomeCategory;
@@ -115,7 +116,6 @@ public function store(Request $request) {
     Session::put('success',('Payment Successful'));
     return redirect()->back();
 }
-
 
 
 

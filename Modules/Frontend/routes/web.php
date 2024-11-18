@@ -29,7 +29,6 @@ Route::group([], function () {
     Route::any('/updateplaytrack', [FrontendController::class, 'updateplaytrack'])->name('frontend.updateplaytrack');
     // payment routes
     Route::get('/initiate-payment/{id}', [FrontendController::class, 'initiate_payment'])->name('frontend.initiate-payment');
-    Route::get('product',[FrontendController::class,'index']);
     Route::post('razorpay-payment',[FrontendController::class,'store'])->name('razorpay.payment.store');
 
     Route::get('/resticted', [FrontendController::class, 'resticted'])->name('frontend.resticted');
