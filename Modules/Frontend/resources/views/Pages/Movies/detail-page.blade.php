@@ -6,12 +6,13 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="pt-0">
-                        <video id="my-video" poster="{{ asset($movie->banner_image)  }}"
-                            class="video-js vjs-big-play-centered w-100" controls preload="auto"
+                    <video id="my-video" poster="{{ asset($movie->banner_image)  }}"
+                            class="video-js vjs-big-play-centered w-100 my-video-details" controls  preload="metadata"
                             data-setup='{{ asset($movie->banner_image)  }}'>
                             <source src="{{ asset('frontend/images/video/sample-video.mp4') }}" type="video/mp4" />
                             <source src="MY_VIDEO.webm" type="video/webm" />
-                        </video>
+                    </video>
+                    <input type="hidden" id="movie-id" value="{{ $movie->id }}">
                     </div>
                 </div>
             </div>
@@ -23,7 +24,8 @@
     <div class="row justify-content-start">
         @if($movie->getticket)
         <div class="col-auto">
-            <a href=""><button type="button" class="btn btn-outline-secondary">Get Tickets</button></a>
+            <button  id="rzp-button" type="button" class="btn btn-outline-secondary">Get Tickets</button>
+            
         </div>
         @endif 
         @if($movie->officalsite)
@@ -212,9 +214,129 @@
 
  
 
+ <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+ <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+    document.getElementById('rzp-button').onclick = function(e) {
+        var options = {
+            "key": "rzp_test_Muz86P5J70D0WT", // Your API key
+            "amount": "{{ $movie->price }}", // Amount in currency subunits (e.g., paise for INR)
+            "currency": "INR",
+            "name": "Hexamed",
+            "description": "Payment",
+            "image": "https://dsdsdsdsdsdsd-sdsdsdsd.com/public/assets/img/hexamedlogo.png",
+            "order_id": "{{ $movie->id }}", // Pass the order id obtained from backend
+            "prefill": {
+                "name": "John Doe",
+                "email": "customer@example.com"
+            },
+            "theme": {
+                "color": "#FF0000" // Bright red color
+            },
+            "handler": function (response){
+                // Populate form with the response data
+                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+                document.getElementById('razorpay_signature').value = response.razorpay_signature;
+
+                // Submit the form
+                document.getElementById('razorpay-form').submit();
+            },
+            "modal": {
+                "ondismiss": function(){
+                    console.log("Checkout form closed");
+                }
+            }
+        };
+
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+        e.preventDefault();
+    }
+</script>
 
 
-  
+
+  <script>
+    
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize the Video.js player
+    const videoElement = document.querySelector('#my-video'); // The video element ID
+    const movieId = document.querySelector('#movie-id').value;
+    const player = videojs(videoElement); // Create Video.js player instance
+    // Wait for the player to be ready
+    player.ready(() => {
+        console.log('Video.js player is ready.');
+
+        // Add event listener for metadata loaded
+        player.on('loadedmetadata', () => {
+            console.log('Metadata loaded. Duration:', player.duration());
+        });
+
+        // Save playback details
+        function savePlaybackDetails() {
+            const currentTime = player.currentTime(); // Current playback time
+            const totalLength = player.duration(); // Total video duration
+
+            console.log(`Saving playback: Current time = ${currentTime}, Total length = ${totalLength}`);
+
+       
+
+            $.ajax({
+                url:  "{{ route('frontend.updateplaytrack') }}",// URL endpoint
+                type: 'POST', // HTTP method
+                dataType: 'json', // Expected response data type
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                },
+                data: {
+                    movie_id: movieId, // Movie ID
+                    current_time: currentTime, // Current playback time
+                    total_length: totalLength, // Total video duration
+                },
+                success: function (response) {
+                    console.log('Playback saved:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error saving playback:', error);
+                    console.error('Response:', xhr.responseText);
+                },
+            });
+            
+            // Send data to the backend
+            // fetch(endpointroute.savePlayback, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content, // CSRF token
+            //     },
+            //     body: JSON.stringify({
+            //         movie_id: movieId,
+            //         current_time: currentTime,
+            //         total_length: totalLength,
+            //     }),
+            // })
+            //     .then(response => response.json())
+            //     .then(data => console.log('Playback saved:', data))
+            //     .catch(error => console.error('Error saving playback:', error));
+        }
+
+        // Trigger save on page unload
+        window.addEventListener('beforeunload', () => {
+            savePlaybackDetails();
+        });
+
+        // Also save details when the page becomes hidden
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') {
+                savePlaybackDetails();
+            }
+        });
+    });
+});
+
+  </script>
 
     
     

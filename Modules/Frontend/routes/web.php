@@ -26,6 +26,11 @@ Route::group([], function () {
 
     //detail pages
     Route::get('/movie-detail/{id}', [FrontendController::class, 'movie_detail'])->name('frontend.movie_detail');
+    Route::any('/updateplaytrack', [FrontendController::class, 'updateplaytrack'])->name('frontend.updateplaytrack');
+    // payment routes
+    Route::get('/get-ticket', [FrontendController::class, 'getTicket'])->name('ticket.get');
+    Route::post('/payment-callback', [FrontendController::class, 'paymentCallback'])->name('payment.callback');
+
     Route::get('/resticted', [FrontendController::class, 'resticted'])->name('frontend.resticted');
     Route::get('/releted-merchandies', [FrontendController::class, 'releted_merchandies'])->name('frontend.releted_merchandies');
     Route::get('/tv-show-detail', [FrontendController::class, 'tvshow_detail'])->name('frontend.tvshow_detail');

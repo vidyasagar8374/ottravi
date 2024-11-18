@@ -33,3 +33,4 @@
     <!-- NoUI Slider css -->
     <link rel="stylesheet" href="{{ asset('frontend/vendor/noUiSilder/style/nouislider.min.css') }}" />
 @endif
+

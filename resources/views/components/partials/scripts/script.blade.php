@@ -18,3 +18,7 @@
 <script src="{{ asset('dashboard/js/chart-custom.js') }}" defer></script>
 <script src="{{ asset('dashboard/js/plugins/select2.js') }}" defer></script>
 <script src="{{ asset('dashboard/js/plugins/flatpickr.js') }}" defer></script>
+
+
+
+

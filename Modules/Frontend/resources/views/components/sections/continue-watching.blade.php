@@ -8,36 +8,35 @@
                 data-tab="3" data-mobile="2" data-mobile-sm="2" data-autoplay="false" data-loop="false"
                 data-navigation="true" data-pagination="true">
                 <ul class="p-0 swiper-wrapper m-0  list-inline">
-                    <li class="swiper-slide">
-                        @include('frontend::components.cards.continue-watch-card', ['imagePath'=>
-                        asset('frontend/images/continue-watch/01.webp'), 'progressValue'=>"50%", 'dataLeftTime'=>"70 of
-                        230 m"])
-                    </li>
-                    <li class="swiper-slide">
-                        @include('frontend::components.cards.continue-watch-card', ['imagePath'=>
-                        asset('frontend/images/continue-watch/02.webp'), 'progressValue'=>"30%", 'dataLeftTime'=>"120 of
-                        130 m"])
-                    </li>
-                    <li class="swiper-slide">
-                        @include('frontend::components.cards.continue-watch-card', ['imagePath'=>
-                        asset('frontend/images/continue-watch/03.webp'), 'progressValue'=>"90%", 'dataLeftTime'=>"60 of
-                        134 m"])
-                    </li>
-                    <li class="swiper-slide">
-                        @include('frontend::components.cards.continue-watch-card', ['imagePath'=>
-                        asset('frontend/images/continue-watch/04.webp'), 'progressValue'=>"20%", 'dataLeftTime'=>"60 of
-                        134 m"])
-                    </li>
-                    <li class="swiper-slide">
-                        @include('frontend::components.cards.continue-watch-card', ['imagePath'=>
-                        asset('frontend/images/continue-watch/05.webp'), 'progressValue'=>"100%", 'dataLeftTime'=>"45 of
-                        157 m"])
-                    </li>
-                    <li class="swiper-slide">
-                        @include('frontend::components.cards.continue-watch-card', ['imagePath'=>
-                        asset('frontend/images/continue-watch/06.webp'), 'progressValue'=>"100%", 'dataLeftTime'=>"70 of
-                        230 m"])
-                    </li>
+                @if(count($continuewatches) > 0)
+                    @foreach($continuewatches as $continuewatch)
+                        
+                        @php
+                            // Calculate progress as a percentage
+                            $progress = $continuewatch->total_length > 0 
+                                        ? ($continuewatch->paused_length / $continuewatch->total_length) * 100 
+                                        : 0;
+                            // Round paused_length and total_length
+                            $roundedPausedLength = round($continuewatch->paused_length, 0); // Round to 0 decimal places
+                            $roundedTotalLength = round($continuewatch->total_length, 0); // Round to 0 decimal places
+                            $movieid = Crypt::encrypt($continuewatch->movie_id);
+                        @endphp
+                        <li class="swiper-slide">
+                            
+                                @include('frontend::components.cards.continue-watch-card', [
+                                    'imagePath' => asset($continuewatch->moviedata->bgsm_image),
+                                    'progressValue' => round($progress, 2) . "%", // Rounded progress
+                                    'dataLeftTime' => $roundedPausedLength . " of " . $roundedTotalLength . " m",
+                                    'movieId' => $movieid
+                                ])
+                            
+                        </li>
+                    @endforeach
+                @endif
+
+
+
+
                 </ul>
                 <div class="swiper-button swiper-button-next"></div>
                 <div class="swiper-button swiper-button-prev"></div>

@@ -25,8 +25,16 @@ class FrontendController extends Controller
         $banners = Banner::where('is_active', 1)->get();
         $upcomings = Movie::get();
         $moviescategories = HomeCategory::with('categoryname.movie')->get();
-        // dd($moviescategories);
-        return view('frontend::Pages.MainPages.index-page',compact('banners','upcomings','moviescategories'));
+        if(auth()->user()){
+            $continuewatches = UserPurchaseMovie::with('moviedata')->where('user_id', auth()->user()->id)->where('is_active', 1)->get(); 
+        }else{
+            $continuewatches = [];
+        }
+        
+        // dd($continuewatches);
+        return view('frontend::Pages.MainPages.index-page',compact('banners','upcomings','moviescategories','continuewatches'));
+        
+        
     }
     public function getVideoDetails(Request $request)
 {
@@ -45,7 +53,77 @@ class FrontendController extends Controller
 
     return response()->json(['error' => 'Movie not found.'], 404);
 }
+public function updateplaytrack(Request $request)
+{
+    // dd($request->all());
+    try {
+        // Decrypt the movie ID
+        // $movieId = Crypt::decrypt($request->movie_id);
 
+        // Find the movie by ID
+        $movie = UserPurchaseMovie::where('movie_id', $request->movie_id)->first();
+
+        if ($movie) {
+            // Update the paused length
+            $movie->update([
+                'paused_length' => $request->current_time,
+            ]);
+
+            // Return success response
+            return response()->json([
+                'success' => true,
+                'message' => 'Playback details updated successfully.',
+            ], 200);
+        } else {
+            // Return not found response
+            return response()->json([
+                'success' => false,
+                'message' => 'Movie not found.',
+            ], 404);
+        }
+    } catch (\Exception $e) {
+        // Return error response
+        return response()->json([
+            'success' => false,
+            'message' => 'An error occurred while updating playback details.',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
+
+    // payment functions
+    public function getTicket()
+    {
+        $api = new Api(config('razorpay.key_id'), config('razorpay.key_secret'));
+
+        // Create an order in Razorpay
+        $order = $api->order->create([
+            'amount' => 50000, // Amount in paise
+            'currency' => 'INR',
+            'receipt' => 'order_rcptid_11',
+            'payment_capture' => 1
+        ]);
+
+        return view('tickets.purchase', ['orderId' => $order['id']]);
+    }
+
+    public function paymentCallback(Request $request)
+    {
+        // Validate and process the Razorpay payment details
+        $input = $request->all();
+
+        try {
+            $api = new Api(config('razorpay.key_id'), config('razorpay.key_secret'));
+            $payment = $api->payment->fetch($input['razorpay_payment_id']);
+            $payment->capture(['amount' => $payment['amount']]);
+
+            // Store payment details in the database
+
+            return response()->json(['success' => true, 'message' => 'Payment successful']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
     public function ott()
     {
         return view('frontend::Pages.MainPages.ott-page');

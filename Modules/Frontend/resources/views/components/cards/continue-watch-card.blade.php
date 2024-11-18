@@ -1,7 +1,7 @@
 <div class="iq-watching-block">
     <div class="block-images position-relative">
         <div class="iq-image-box overly-images">
-            <a href="movie-detail" class="d-block">
+            <a href="{{ url('/movie-detail/' . ($movieId ?? '')) }}" class="d-block">
                 <img src="{{ $imagePath }}" alt="movie-card" class="img-fluid object-cover w-100 d-block border-0"
                     loading="lazy">
             </a>
