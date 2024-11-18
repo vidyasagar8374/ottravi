@@ -28,8 +28,9 @@ Route::group([], function () {
     Route::get('/movie-detail/{id}', [FrontendController::class, 'movie_detail'])->name('frontend.movie_detail');
     Route::any('/updateplaytrack', [FrontendController::class, 'updateplaytrack'])->name('frontend.updateplaytrack');
     // payment routes
-    Route::get('/get-ticket', [FrontendController::class, 'getTicket'])->name('ticket.get');
-    Route::post('/payment-callback', [FrontendController::class, 'paymentCallback'])->name('payment.callback');
+    Route::get('/initiate-payment/{id}', [FrontendController::class, 'initiate_payment'])->name('frontend.initiate-payment');
+    Route::get('product',[FrontendController::class,'index']);
+    Route::post('razorpay-payment',[FrontendController::class,'store'])->name('razorpay.payment.store');
 
     Route::get('/resticted', [FrontendController::class, 'resticted'])->name('frontend.resticted');
     Route::get('/releted-merchandies', [FrontendController::class, 'releted_merchandies'])->name('frontend.releted_merchandies');

@@ -24,8 +24,11 @@
     <div class="row justify-content-start">
         @if($movie->getticket)
         <div class="col-auto">
-            <button  id="rzp-button" type="button" class="btn btn-outline-secondary">Get Tickets</button>
-            
+        <a href="{{ url('/initiate-payment/' . Crypt::encrypt($movie->id)) }}" target="_blank">
+                <button id="rzp-button" type="button" class="btn btn-outline-secondary">Get Tickets</button>
+            </a>
+
+                    
         </div>
         @endif 
         @if($movie->officalsite)
@@ -215,49 +218,7 @@
  
 
  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
- <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-        <script>
-    document.getElementById('rzp-button').onclick = function(e) {
-        var options = {
-            "key": "rzp_test_Muz86P5J70D0WT", // Your API key
-            "amount": "{{ $movie->price }}", // Amount in currency subunits (e.g., paise for INR)
-            "currency": "INR",
-            "name": "Hexamed",
-            "description": "Payment",
-            "image": "https://dsdsdsdsdsdsd-sdsdsdsd.com/public/assets/img/hexamedlogo.png",
-            "order_id": "{{ $movie->id }}", // Pass the order id obtained from backend
-            "prefill": {
-                "name": "John Doe",
-                "email": "customer@example.com"
-            },
-            "theme": {
-                "color": "#FF0000" // Bright red color
-            },
-            "handler": function (response){
-                // Populate form with the response data
-                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
-                document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
-                document.getElementById('razorpay_signature').value = response.razorpay_signature;
-
-                // Submit the form
-                document.getElementById('razorpay-form').submit();
-            },
-            "modal": {
-                "ondismiss": function(){
-                    console.log("Checkout form closed");
-                }
-            }
-        };
-
-        var rzp1 = new Razorpay(options);
-        rzp1.open();
-        e.preventDefault();
-    }
-</script>
-
-
-
+ 
   <script>
     
 document.addEventListener('DOMContentLoaded', () => {

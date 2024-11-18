@@ -91,39 +91,34 @@ public function updateplaytrack(Request $request)
     }
 }
 
-    // payment functions
-    public function getTicket()
-    {
-        $api = new Api(config('razorpay.key_id'), config('razorpay.key_secret'));
-
-        // Create an order in Razorpay
-        $order = $api->order->create([
-            'amount' => 50000, // Amount in paise
-            'currency' => 'INR',
-            'receipt' => 'order_rcptid_11',
-            'payment_capture' => 1
-        ]);
-
-        return view('tickets.purchase', ['orderId' => $order['id']]);
-    }
-
-    public function paymentCallback(Request $request)
-    {
-        // Validate and process the Razorpay payment details
-        $input = $request->all();
-
+public function store(Request $request) {
+    $input = $request->all();
+    $api = new Api (env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+    $payment = $api->payment->fetch($input['razorpay_payment_id']);
+    if(count($input) && !empty($input['razorpay_payment_id'])) {
         try {
-            $api = new Api(config('razorpay.key_id'), config('razorpay.key_secret'));
-            $payment = $api->payment->fetch($input['razorpay_payment_id']);
-            $payment->capture(['amount' => $payment['amount']]);
-
-            // Store payment details in the database
-
-            return response()->json(['success' => true, 'message' => 'Payment successful']);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+            $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount' => $payment['amount']));
+            $payment = Payment::create([
+                'r_payment_id' => $response['id'],
+                'method' => $response['method'],
+                'currency' => $response['currency'],
+                'user_email' => $response['email'],
+                'amount' => $response['amount']/100,
+                'json_response' => json_encode((array)$response)
+            ]);
+        } catch(Exceptio $e) {
+            return $e->getMessage();
+            Session::put('error',$e->getMessage());
+            return redirect()->back();
         }
     }
+    Session::put('success',('Payment Successful'));
+    return redirect()->back();
+}
+
+
+
+
     public function ott()
     {
         return view('frontend::Pages.MainPages.ott-page');
@@ -182,6 +177,27 @@ public function updateplaytrack(Request $request)
             abort(404, 'Invalid movie ID');
         }
 
+    }
+    public function initiate_payment(Request $request)
+    {
+         // dd($request->id);
+         $movieId = $request->id;
+         try {
+             // Decrypt the ID
+             $id = Crypt::decrypt($movieId);
+             $movie = Movie::findOrFail($id);
+             $ottdetails = '';
+             if($movie){
+                 $ottdetails = Movie::with('ottdetails.ott')->where('id',$id)->get();
+                 //  dd($ottdetails);
+             }
+             $userpurchasedetails = UserPurchaseMovie::get();
+             
+             return view('frontend::Pages.Movies.initiate-payment',compact('movie','userpurchasedetails','ottdetails'));
+         } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+             // Handle the case where decryption fails (invalid or tampered data)
+             abort(404, 'Invalid movie ID');
+         }
     }
 
     public function tvshow_detail()
