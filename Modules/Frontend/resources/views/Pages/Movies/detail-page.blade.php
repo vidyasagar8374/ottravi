@@ -1,17 +1,25 @@
 @extends('frontend::layouts.master', ['isSwiperSlider' => true, 'isVideoJs' => true, 'bodyClass' => 'custom-header-relative', 'isSelect2' => true])
 
+
 @section('content')
     <div class="iq-main-slider site-video">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="pt-0">
-                    <video id="my-video" poster="{{ asset($movie->banner_image)  }}"
-                            class="video-js vjs-big-play-centered w-100 my-video-details" controls  preload="metadata"
-                            data-setup='{{ asset($movie->banner_image)  }}'>
+                    <video id="my-video" poster="{{ asset($movie->banner_image) }}"
+                            class="video-js vjs-big-play-centered w-100 my-video-details"
+                            @if(!empty($userpurchasedetails)) controls @endif
+                            preload="metadata"
+                            data-setup='{{ asset($movie->banner_image) }}'
+                            @if(!empty($userpurchasedetails) && isset($userpurchasedetails->paused_length))
+                            onloadedmetadata="this.currentTime = {{ $userpurchasedetails->paused_length }}"
+                            @endif>
                             <source src="{{ asset('frontend/images/video/sample-video.mp4') }}" type="video/mp4" />
                             <source src="MY_VIDEO.webm" type="video/webm" />
-                    </video>
+                        </video>
+
+
                     <input type="hidden" id="movie-id" value="{{ $movie->id }}">
                     </div>
                 </div>
@@ -22,15 +30,16 @@
     <div class="movie-purchase-btns pt-5">
     <div class="container">
     <div class="row justify-content-start">
+        @if($userpurchasedetails)
+        @else
         @if($movie->getticket)
         <div class="col-auto">
         <a href="{{ url('/initiate-payment/' . Crypt::encrypt($movie->id)) }}">
                 <button id="rzp-button" type="button" class="btn btn-outline-secondary">Get Tickets</button>
-            </a>
-
-                    
+            </a>         
         </div>
         @endif 
+        @endif
         @if($movie->officalsite)
         <div class="col-auto">
            <a href="{{ $movie->officalsite }}" target="_blank"><button type="button" class="btn btn-outline-secondary">Official Site</button></a> 
@@ -38,7 +47,7 @@
         @endif
         @if($movie->ott)
         <div class="col-auto">
-          <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModalLong">Bye Now</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModalLong">On OTT's</button>
         </div>
         @endif
     </div>
@@ -298,10 +307,5 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
   </script>
-
-    
-    
-
-
         <!-- below movies recomended -->
 @endsection

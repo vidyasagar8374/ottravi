@@ -12,6 +12,7 @@ use App\Models\HomeCategory;
 use App\Models\UserPurchaseMovie;
 use App\Models\ottdataList;
 use App\Models\ottList;
+use App\Models\videoTracking;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Crypt;
@@ -31,7 +32,12 @@ class FrontendController extends Controller
         $upcomings = Movie::get();
         $moviescategories = HomeCategory::with('categoryname.movie')->get();
         if(auth()->user()){
-            $continuewatches = UserPurchaseMovie::with('moviedata')->where('user_id', auth()->user()->id)->where('is_active', 1)->get(); 
+            $continuewatches = videoTracking::with('moviedata')
+            ->join('user_purchase_movies', 'user_purchase_movies.movie_id', '=', 'video_trackings.movie_id') // Correct the table name
+            ->where('user_purchase_movies.user_id', auth()->user()->id)
+            ->where('user_purchase_movies.is_watched', 0)
+            ->where('user_purchase_movies.is_active', 1)
+            ->get();   
         }else{
             $continuewatches = [];
         }
@@ -61,39 +67,37 @@ class FrontendController extends Controller
 public function updateplaytrack(Request $request)
 {
     // dd($request->all());
-    try {
-        // Decrypt the movie ID
+      // Decrypt the movie ID
         // $movieId = Crypt::decrypt($request->movie_id);
-
-        // Find the movie by ID
-        $movie = UserPurchaseMovie::where('movie_id', $request->movie_id)->first();
-
-        if ($movie) {
-            // Update the paused length
-            $movie->update([
-                'paused_length' => $request->current_time,
-            ]);
-
-            // Return success response
+        try {
+            $movie = videoTracking::updateOrCreate(
+                [
+                    'movie_id' => $request->movie_id, 
+                    'user_id' => auth()->user()->id   
+                ],
+                [
+                    'paused_length' => $request->current_time,
+                    'total_length' => $request->total_length,
+                ]
+            );
+            
+        
             return response()->json([
                 'success' => true,
-                'message' => 'Playback details updated successfully.',
+                'message' => $movie->wasRecentlyCreated 
+                    ? 'Playback details created successfully.' 
+                    : 'Playback details updated successfully.',
             ], 200);
-        } else {
-            // Return not found response
+        
+        } catch (\Exception $e) {
+            // Return error response
             return response()->json([
                 'success' => false,
-                'message' => 'Movie not found.',
-            ], 404);
+                'message' => 'An error occurred while updating or creating playback details.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-    } catch (\Exception $e) {
-        // Return error response
-        return response()->json([
-            'success' => false,
-            'message' => 'An error occurred while updating playback details.',
-            'error' => $e->getMessage(),
-        ], 500);
-    }
+        
 }
 
 
@@ -116,9 +120,8 @@ public function store(Request $request)
 
         $payment = $api->payment->fetch($input['razorpay_payment_id']);
         $movieId = $payment->notes['movie_id'];
-
+        // dd($movieId);
         $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount' => $payment['amount']));
-
 
         $paymentRecord = Payment::create([
             'r_payment_id' => $response['id'],
@@ -128,6 +131,8 @@ public function store(Request $request)
             'amount' => $response['amount'] / 100, 
             'json_response' => json_encode((array) $response)
         ]);
+       
+    //    dd($paymentRecord_id);
 
         if (!$paymentRecord) {
             throw new \Exception('Failed to save payment record.');
@@ -137,15 +142,15 @@ public function store(Request $request)
         if (!$movie) {
             throw new \Exception('Movie not found.');
         }
-
+        $paymentRecord_id = $paymentRecord->id;
         $insertpurchase = UserPurchaseMovie::create([
             'user_id' => auth()->user()->id,
             'movie_id' => $movie->id,
+            'ticket_id' => $paymentRecord_id,
             'is_active' => 1,
             'purchase_date' => Carbon::now(), // Current date and time
-            'expire_date' => Carbon::now()->addMonth(), // One month from now
-            'total_length' => 0,
-            'paused_length' => 0
+            'expire_date' => Carbon::now()->addDays(env('PURCHASE_EXPIRY_DAYS')), // One month from now
+            'is_watched' => 0
         ]);
         // dd($insertpurchase);
         if (!$insertpurchase) {
@@ -221,7 +226,19 @@ public function store(Request $request)
                 $ottdetails = Movie::with('ottdetails.ott')->where('id',$id)->get();
                 //  dd($ottdetails);
             }
-            $userpurchasedetails = UserPurchaseMovie::get();
+            if(auth()->user()){
+                $userpurchasedetails = videoTracking::with('moviedata')
+                ->join('user_purchase_movies', 'user_purchase_movies.movie_id', '=', 'video_trackings.movie_id') // Correct the table name
+                ->where('user_purchase_movies.user_id', auth()->user()->id)
+                ->where('user_purchase_movies.movie_id', $id)
+                ->where('user_purchase_movies.expire_date', '>=', Carbon::now())
+                ->where('user_purchase_movies.is_watched', 0)
+                ->where('user_purchase_movies.is_active', 1)
+                ->first();
+                //  dd($userpurchasedetails);   
+            }else{
+                $userpurchasedetails = [];
+            }
             
             return view('frontend::Pages.Movies.detail-page',compact('movie','userpurchasedetails','ottdetails'));
         } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {

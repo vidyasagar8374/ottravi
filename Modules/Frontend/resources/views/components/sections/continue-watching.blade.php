@@ -1,3 +1,4 @@
+@if(count($continuewatches) > 0)
 <section class="continue-watching-block">
     <div class="container-fluid">
         <div class="overflow-hidden">
@@ -8,7 +9,7 @@
                 data-tab="3" data-mobile="2" data-mobile-sm="2" data-autoplay="false" data-loop="false"
                 data-navigation="true" data-pagination="true">
                 <ul class="p-0 swiper-wrapper m-0  list-inline">
-                @if(count($continuewatches) > 0)
+           
                     @foreach($continuewatches as $continuewatch)
                         
                         @php
@@ -32,11 +33,6 @@
                             
                         </li>
                     @endforeach
-                @endif
-
-
-
-
                 </ul>
                 <div class="swiper-button swiper-button-next"></div>
                 <div class="swiper-button swiper-button-prev"></div>
@@ -44,3 +40,4 @@
         </div>
     </div>
 </section>
+@endif
