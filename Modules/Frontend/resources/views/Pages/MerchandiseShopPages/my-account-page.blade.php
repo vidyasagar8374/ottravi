@@ -69,7 +69,7 @@ __('frontendheader.my_account')])
                 <div class="tab-content" id="product-menu-content">
                     <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
                         <div class="myaccount-content text-body p-4">
-                            <p>{{__('frontendshop.hello_jenny')}} <a href="login">{{__('frontendshop.log_out')}}</a>)
+                            <p>Hi {{$user->first_name}} 
                             </p>
                             <p>{{__('frontendshop.your_account')}} <a
                                     href="javascript:void(0)">{{__('frontendshop.recent_orders')}}</a>,
@@ -95,10 +95,11 @@ __('frontendheader.my_account')])
                                     </thead>
                                     <tbody>
                                         <tr class="border-bottom">
-                                            <td class="text-primary fs-6">#32604</td>
-                                            <td>October 28, 2022</td>
-                                            <td>{{__('frontendshop.cancelled')}}</td>
-                                            <td>$215.00 For 0 Items</td>
+                                            @foreach($purchasemovies as $order)
+                                            <td class="text-primary fs-6"># {{$order->id}}</td>
+                                            <td>{{ $order->purchase_date }}</td>
+                                            <td>Success</td>
+                                            <td>100</td>
                                             <td>
                                                 <div class="d-flex align-items-center gap-2">
                                                     @include(
@@ -128,124 +129,7 @@ __('frontendheader.my_account')])
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr class="border-bottom">
-                                            <td class="text-primary fs-6">#32584</td>
-                                            <td>October 27, 2022</td>
-                                            <td>{{__('frontendshop.on_hold')}}</td>
-                                            <td>$522.00 For 0 Items</td>
-                                            <td>
-                                                <div class="d-flex align-items-center gap-2">
-                                                    @include(
-                                                    'frontend::components.widgets.custom-button',
-                                                    [
-                                                    'buttonTitle' => __('frontendshop.pay'),
-                                                    'buttonUrl' => 'javascript:void(0)',
-                                                    ]
-                                                    )
-
-                                                    @include(
-                                                    'frontend::components.widgets.custom-button',
-                                                    [
-                                                    'buttonTitle' => __('frontendshop.view'),
-                                                    'buttonUrl' => 'javascript:void(0)',
-                                                    ]
-                                                    )
-
-                                                    @include(
-                                                    'frontend::components.widgets.custom-button',
-                                                    [
-                                                    'buttonTitle' => __('frontendshop.cancel'),
-                                                    'buttonUrl' => 'javascript:void(0)',
-                                                    ]
-                                                    )
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="border-bottom">
-                                            <td class="text-primary fs-6">#31756</td>
-                                            <td>October 19, 2022</td>
-                                            <td>{{__('frontendshop.processing')}}</td>
-                                            <td>$243.00 For 0 Items</td>
-                                            <td>
-                                                <div class="d-flex align-items-center gap-2">
-                                                    @include(
-                                                    'frontend::components.widgets.custom-button',
-                                                    [
-                                                    'buttonTitle' => __('frontendshop.pay'),
-                                                    'buttonUrl' => 'javascript:void(0)',
-                                                    ]
-                                                    )
-
-                                                    @include(
-                                                    'frontend::components.widgets.custom-button',
-                                                    [
-                                                    'buttonTitle' => __('frontendshop.view'),
-                                                    'buttonUrl' => 'javascript:void(0)',
-                                                    ]
-                                                    )
-
-                                                    @include(
-                                                    'frontend::components.widgets.custom-button',
-                                                    [
-                                                    'buttonTitle' => __('frontendshop.cancel'),
-                                                    'buttonUrl' => 'javascript:void(0)',
-                                                    ]
-                                                    )
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="border-bottom">
-                                            <td class="text-primary fs-6">#23663</td>
-                                            <td>October 7, 2022</td>
-                                            <td>{{__('frontendshop.completed')}}</td>
-                                            <td>$123.00 For 0 Items</td>
-                                            <td class="fs-6">
-                                                <div class="d-flex align-items-center gap-2">
-                                                    @include(
-                                                    'frontend::components.widgets.custom-button',
-                                                    [
-                                                    'buttonTitle' => __('frontendshop.view'),
-                                                    'buttonUrl' => 'javascript:void(0)',
-                                                    ]
-                                                    )
-
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="border-bottom">
-                                            <td class="text-primary fs-6">#23612</td>
-                                            <td>October 7, 2022</td>
-                                            <td>{{__('frontendshop.completed')}}</td>
-                                            <td>$64.00 For 0 Items</td>
-                                            <td class="fs-6">
-                                                <div class="d-flex align-items-center gap-2">
-                                                    @include(
-                                                    'frontend::components.widgets.custom-button',
-                                                    [
-                                                    'buttonTitle' => __('frontendshop.view'),
-                                                    'buttonUrl' => 'javascript:void(0)',
-                                                    ]
-                                                    )
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-primary fs-6">#19243</td>
-                                            <td>April 1, 2022</td>
-                                            <td>{{__('frontendshop.completed')}}</td>
-                                            <td>$159.00 For 0 Items</td>
-                                            <td class="fs-6">
-                                                <div class="d-flex align-items-center gap-2">
-                                                    @include(
-                                                    'frontend::components.widgets.custom-button',
-                                                    [
-                                                    'buttonTitle' => __('frontendshop.view'),
-                                                    'buttonUrl' => 'javascript:void(0)',
-                                                    ]
-                                                    )
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -565,26 +449,26 @@ __('frontendheader.my_account')])
                                 <div class="form-group mb-5">
                                     <label class="mb-2">{{__('frontendshop.first_name')}}&nbsp; <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" name="first-name" value="John" class="form-control"
+                                    <input type="text" name="first-name" value="{{ $user->first_name }}" class="form-control"
                                         required="required">
                                 </div>
                                 <div class="form-group mb-5">
                                     <label class="mb-2">{{__('frontendshop.last_name')}}&nbsp; <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" name="last-name" value="deo" class="form-control"
+                                    <input type="text" name="last-name" value="{{ $user->last_name }}" class="form-control"
                                         required="required">
                                 </div>
                                 <div class="form-group mb-5">
                                     <label class="mb-2">{{__('frontendshop.display_name')}}&nbsp; <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" name="display-name" value="John" class="form-control"
+                                    <input type="text" name="display-name" value="{{ $user->first_name }} {{ $user->last_name }}" class="form-control"
                                         required="required">
                                 </div>
                                 <em class="d-block mb-5">{{__('frontendshop.displayed_name')}}</em>
                                 <div class="form-group mb-5">
                                     <label class="mb-2">{{__('frontendshop.email_address')}}&nbsp; <span
                                             class="text-danger">*</span></label>
-                                    <input type="email" name="email" value="johndeo@gmail.com" class="form-control"
+                                    <input type="email" name="email" value="{{ $user->email }}" class="form-control"
                                         required="required">
                                 </div>
                                 <h4 class="fw-normal mb-5">{{__('frontendshop.password_change')}}</h4>

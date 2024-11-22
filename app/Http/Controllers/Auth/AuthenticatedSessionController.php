@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
     if ($user->role == 1) {
         return redirect()->intended('/app');
     } elseif ($user->role == 2) {
-        return redirect()->intended(route('frontend.my_account'));
+        return redirect()->intended(route('frontend.index'));
     }
 
     // Default redirect if no role matches

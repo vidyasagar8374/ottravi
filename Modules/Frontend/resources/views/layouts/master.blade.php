@@ -19,6 +19,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300&display=swap"
         rel="stylesheet">
+   <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>    
 
 </head>
 
@@ -45,7 +46,7 @@
             <i class="fa-solid fa-chevron-up"></i>
         </a>
     </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 @include('frontend::components.partials.setting')
     {{-- Vite JS --}}
     {{ module_vite('build-frontend', 'resources/assets/js/app.js') }}
@@ -54,5 +55,6 @@
 
     @include('frontend::components.partials.scripts.script')
     <script src="{{ asset('dashboard/js/plugins/customottjs.js') }}" defer></script>
+
 
 </body>

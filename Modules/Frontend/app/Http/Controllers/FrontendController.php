@@ -523,7 +523,16 @@ public function store(Request $request)
 
     public function my_account()
     {
-        return view('frontend::Pages.MerchandiseShopPages.my-account-page');
+        if(auth()->user()){
+            $user = auth()->user();
+            $purchasemovies = UserPurchaseMovie::with('moviedata')->where('user_id', $user->id)->get();
+            // dd($purchasemovies);
+        }else{
+            $user = null;
+        }
+
+        // dd($user);
+        return view('frontend::Pages.MerchandiseShopPages.my-account-page',compact('user','purchasemovies'));
     }
 
     public function cart()

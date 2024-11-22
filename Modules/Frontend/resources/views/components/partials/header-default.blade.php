@@ -413,7 +413,7 @@
                             </li>
                             @if (auth()->user())
                             <!-- dropdown method -->
-                            <!-- <li class="nav-item dropdown" id="itemdropdown1">
+                            <li class="nav-item dropdown" id="itemdropdown1">
                                 <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="btn-icon rounded-pill user-icons">
                                         <span class="btn-inner">
@@ -431,10 +431,10 @@
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-user border-0 p-0 m-0" aria-labelledby="navbarDropdown">
                                     <li class="user-info d-flex align-items-center gap-3 mb-3">
                                         <img src="{{ asset('/frontend/images/user/user1.webp') }}" class="img-fluid" alt="" loading="lazy" />
-                                        <span class="font-size-14 fw-500 text-capitalize text-white">{{__('frontendheader.jenny')}}</span>
+                                        <span class="font-size-14 fw-500 text-capitalize text-white">{{ auth()->user()->first_name }}</span>
                                     </li>
                                     <li>
-                                        <a href="{{ route('frontend.play_list') }}" class="iq-sub-card d-flex align-items-center gap-3">
+                                        <a href="{{ route('frontend.my_account') }}" class="iq-sub-card d-flex align-items-center gap-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 22" fill="none">
                                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.84455 20.6621C4.15273 20.6621 1 20.0876 1 17.7868C1 15.486 4.13273 13.3621 7.84455 13.3621C11.5364 13.3621 14.6891 15.4654 14.6891 17.7662C14.6891 20.066 11.5564 20.6621 7.84455 20.6621Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.83725 10.1738C10.26 10.1738 12.2236 8.21015 12.2236 5.78742C12.2236 3.36469 10.26 1.40015 7.83725 1.40015C5.41452 1.40015 3.44998 3.36469 3.44998 5.78742C3.4418 8.20196 5.3918 10.1656 7.80634 10.1738C7.81725 10.1738 7.82725 10.1738 7.83725 10.1738Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -443,7 +443,7 @@
                                             </h6>
                                         </a>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="{{ route('frontend.play_list') }}" class="iq-sub-card d-flex align-items-center gap-3">
                                             <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="m0 0h24v24h-24z" fill="#fff" opacity="0" transform="matrix(-1 0 0 -1 24 24)"></path>
@@ -452,8 +452,8 @@
                                             <h6 class="mb-0 font-size-14 fw-normal">{{__('frontendheader.watchlist')}}
                                             </h6>
                                         </a>
-                                    </li>
-                                    <li>
+                                    </li> -->
+                                    <!-- <li>
                                         <a href="{{ route('frontend.pricing-page') }}" class="iq-sub-card d-flex align-items-center gap-3">
                                             <svg width="16" height="16" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -462,7 +462,7 @@
                                                 {{__('frontendheader.subscription')}}
                                             </h6>
                                         </a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="iq-sub-card iq-logout-2 mt-1 d-flex justify-content-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -473,27 +473,14 @@
                                     </li>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;"> @csrf </form>
                                 </ul>
-                            </li> -->
-                            <!-- end drop down -->
-                            <!-- new icon -->
-                            <li class="nav-item">
-                                    <a href="{{ route('logout') }}" 
-                                    onclick="event.preventDefault(); 
-                                                document.getElementById('logout-form').submit();" 
-                                    class="nav-link p-0 bg-transparent" role="tab">
-                                        <i class="fas fa-sign-out-alt"></i>
-                                        <span class="ms-2"></span> Logout
-                                    </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </li>
-                            <!-- new icon -->
-                            @else
-                            <li class="nav-item dropdown" id="itemdropdown1">
-                                <a href="{{ route('login') }}" class="nav-link">{{__('frontendheader.login')}}</a>
                             </li>
-                            @endif
+                            <!-- end drop down -->
+                            @else
+                                <li class="nav-item dropdown" id="itemdropdown1">
+                                    <a href="{{ route('login') }}" class="nav-link">{{__('frontendheader.login')}}</a>
+                                </li>
+                            @endif 
+                            <!-- End updated code -->
                         </ul>
                     </div>
                 </div>
