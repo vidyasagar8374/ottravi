@@ -70,6 +70,7 @@ public function updateplaytrack(Request $request)
       // Decrypt the movie ID
         // $movieId = Crypt::decrypt($request->movie_id);
         try {
+            
             $movie = videoTracking::updateOrCreate(
                 [
                     'movie_id' => $request->movie_id, 
@@ -80,6 +81,14 @@ public function updateplaytrack(Request $request)
                     'total_length' => $request->total_length,
                 ]
             );
+                UserPurchaseMovie::where('movie_id', $request->movie_id)
+                ->where('user_id', auth()->user()->id)
+                ->whereNull('after_expire')
+                ->orderBy('created_at', 'desc') // Ensure you're ordering by the latest record
+                ->limit(1) // Optional: limit to only 1 record if necessary
+                ->update([
+                    'after_expire' => Carbon::now()->addDays(2)
+                ]);
             
         
             return response()->json([
@@ -99,8 +108,6 @@ public function updateplaytrack(Request $request)
         }
         
 }
-
-
 
 public function store(Request $request)
 {
@@ -167,8 +174,6 @@ public function store(Request $request)
     } catch (\Exception $e) {
         // Rollback the transaction if any exception occurs
         DB::rollBack();
-
-
         Session::put('error', $e->getMessage());
         return redirect()->back();
     }
@@ -227,19 +232,53 @@ public function store(Request $request)
                 //  dd($ottdetails);
             }
             if(auth()->user()){
-                $userpurchasedetails = videoTracking::with('moviedata')
-                ->join('user_purchase_movies', 'user_purchase_movies.movie_id', '=', 'video_trackings.movie_id') // Correct the table name
-                ->where('user_purchase_movies.user_id', auth()->user()->id)
-                ->where('user_purchase_movies.movie_id', $id)
-                ->where('user_purchase_movies.expire_date', '>=', Carbon::now())
-                ->where('user_purchase_movies.is_watched', 0)
-                ->where('user_purchase_movies.is_active', 1)
-                ->first();
-                //  dd($userpurchasedetails);   
-            }else{
+                $userpurchasedetailsQuery = videoTracking::with('moviedata')
+                    ->join('user_purchase_movies', 'user_purchase_movies.movie_id', '=', 'video_trackings.movie_id')
+                    ->where('user_purchase_movies.user_id', auth()->user()->id)
+                    ->where('user_purchase_movies.movie_id', $id)
+                    ->where('user_purchase_movies.is_watched', 0)
+                    ->where('user_purchase_movies.is_active', 1)
+                    ->where(function ($query) {
+                        $query->where(function ($subQuery) {
+                            // Check if `after_expire` is NULL and compare `expire_date`
+                            $subQuery->whereNull('user_purchase_movies.after_expire')
+                                    ->where('user_purchase_movies.expire_date', '>=', Carbon::now());
+                        })
+                        ->orWhere(function ($subQuery) {
+                            // Check if `after_expire` is NOT NULL and compare `after_expire`
+                            $subQuery->whereNotNull('user_purchase_movies.after_expire')
+                                    ->where('user_purchase_movies.after_expire', '>=', Carbon::now());
+                        });
+                    });
+
+                // Debug SQL query and bindings
+                dd(
+                    $userpurchasedetailsQuery->toSql(),
+                    $userpurchasedetailsQuery->getBindings()
+                );
+
+                // Retrieve the result after debugging
+                $userpurchasedetails = $userpurchasedetailsQuery->first();
+            }
+                else{
                 $userpurchasedetails = [];
             }
+            /* 
+                SELECT * 
+                    FROM video_trackings as vt 
+                    INNER JOIN user_purchase_movies as up 
+                    ON vt.movie_id = up.movie_id 
+                    AND vt.user_id = up.user_id 
+                    WHERE up.is_watched = 0 
+                    AND up.is_active = 1 
+                    AND (
+                        (up.after_expire IS NULL AND up.expire_date >= ?) 
+                        OR 
+                        (up.after_expire IS NOT NULL AND up.after_expire >= ?)
+                    );
+
             
+            */
             return view('frontend::Pages.Movies.detail-page',compact('movie','userpurchasedetails','ottdetails'));
         } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
             // Handle the case where decryption fails (invalid or tampered data)
@@ -529,6 +568,7 @@ public function store(Request $request)
             // dd($purchasemovies);
         }else{
             $user = null;
+            $purchasemovies = [];
         }
 
         // dd($user);
