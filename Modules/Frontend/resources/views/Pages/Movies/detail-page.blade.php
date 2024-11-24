@@ -15,7 +15,7 @@
                             @if(!empty($userpurchasedetails) && isset($userpurchasedetails->paused_length))
                             onloadedmetadata="this.currentTime = {{ $userpurchasedetails->paused_length }}"
                             @endif>
-                            <source src="{{ asset('frontend/images/video/sample-video.mp4') }}" type="video/mp4" />
+                            <source src="{{ asset($movie->movieurl) }}" type="video/mp4" />
                             <source src="MY_VIDEO.webm" type="video/webm" />
                         </video>
 

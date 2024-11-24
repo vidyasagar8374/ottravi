@@ -252,10 +252,7 @@ public function store(Request $request)
                     });
 
                 // Debug SQL query and bindings
-                dd(
-                    $userpurchasedetailsQuery->toSql(),
-                    $userpurchasedetailsQuery->getBindings()
-                );
+                    
 
                 // Retrieve the result after debugging
                 $userpurchasedetails = $userpurchasedetailsQuery->first();
