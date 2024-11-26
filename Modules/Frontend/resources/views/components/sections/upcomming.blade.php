@@ -1,4 +1,5 @@
 @foreach($moviescategories as $category)
+<!-- adding git rep -->
 <div class="upcomimg-block">
     <div class="container-fluid">
         <section class="overflow-hidden">
