@@ -19,7 +19,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300&display=swap"
         rel="stylesheet">
-   <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>    
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 
 </head>
 
@@ -47,6 +47,7 @@
         </a>
     </div>
 
+
 @include('frontend::components.partials.setting')
     {{-- Vite JS --}}
     {{ module_vite('build-frontend', 'resources/assets/js/app.js') }}
@@ -54,7 +55,11 @@
     @include('frontend::components.partials.scripts.plugins')
 
     @include('frontend::components.partials.scripts.script')
-    <script src="{{ asset('dashboard/js/plugins/customottjs.js') }}" defer></script>
+
+ 
+<script src="{{ asset('dashboard/js/plugins/customottjs.js') }}" defer></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
 
 </body>

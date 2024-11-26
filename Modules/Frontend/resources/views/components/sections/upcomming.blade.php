@@ -53,63 +53,56 @@
     </div>
 </div>
 
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script>
-$(document).ready(function () {
-    let activeRequest = null;
-    let hoverTimeout = null;
+// $(document).ready(function () {
+//     let activeRequest = null;
+//     let hoverTimeout = null;
 
-    $('.swiper-slide.video-popup-open').each(function () {
-        const $this = $(this);
+//     $('.swiper-slide.video-popup-open').each(function () {
+//         const $this = $(this);
 
-        $this.on('mouseenter', function () {
-            const movieId = $this.data('movie-id');
+//         $this.on('mouseenter', function () {
+//             const movieId = $this.data('movie-id');
 
-            // Abort any ongoing AJAX request
-            if (activeRequest) activeRequest.abort();
+//             // Abort any ongoing AJAX request
+//             if (activeRequest) activeRequest.abort();
 
-            hoverTimeout = setTimeout(function () {
-                activeRequest = $.ajax({
-                    url: "{{ route('get.video.details') }}",
-                    type: 'GET',
-                    data: { movieId: movieId },
-                    success: function (response) {
-                        console.log("Video URL:", response.videoUrl);
+//             hoverTimeout = setTimeout(function () {
+//                 activeRequest = $.ajax({
+//                     url: "{{ route('get.video.details') }}",
+//                     type: 'GET',
+//                     data: { movieId: movieId },
+//                     success: function (response) {
+//                         console.log("Video URL:", response.videoUrl);
 
-                        if ($this.is(':hover') && response.videoUrl) {
-                            // Set video source and open the modal
-                            $('#modalVideoSource').attr('src', response.videoUrl);
-                            $('#modalVideo')[0].load(); // Load the video
-                            $('#videoModalhover').modal('show'); // Show modal
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error("Error fetching video:", error);
-                    }
-                });
-            }, 3000); // Add delay to avoid unnecessary requests
-        });
+//                         if ($this.is(':hover') && response.videoUrl) {
+//                             // Set video source and open the modal
+//                             $('#modalVideoSource').attr('src', response.videoUrl);
+//                             $('#modalVideo')[0].load(); // Load the video
+//                             $('#videoModalhover').modal('show'); // Show modal
+//                         }
+//                     },
+//                     error: function (xhr, status, error) {
+//                         console.error("Error fetching video:", error);
+//                     }
+//                 });
+//             }, 3000); // Add delay to avoid unnecessary requests
+//         });
 
-        $this.on('mouseleave', function () {
-            // Clear hover timeout and abort any ongoing request
-            if (hoverTimeout) clearTimeout(hoverTimeout);
-            if (activeRequest) activeRequest.abort();
+//         $this.on('mouseleave', function () {
+//             // Clear hover timeout and abort any ongoing request
+//             if (hoverTimeout) clearTimeout(hoverTimeout);
+//             if (activeRequest) activeRequest.abort();
 
-            // Close the modal and reset video source
-            $('#videoModalhover').modal('hide');
-        });
-    });
+//             // Close the modal and reset video source
+//             $('#videoModalhover').modal('hide');
+//         });
+//     });
 
-    // Reset video when modal is hidden
-    $('#videoModalhover').on('hidden.bs.modal', function () {
-        $('#modalVideo')[0].pause(); // Pause video playback
-        $('#modalVideoSource').attr('src', ''); // Clear video source
-    });
-});
-
-
-
-
-
+//     // Reset video when modal is hidden
+//     $('#videoModalhover').on('hidden.bs.modal', function () {
+//         $('#modalVideo')[0].pause(); // Pause video playback
+//         $('#modalVideoSource').attr('src', ''); // Clear video source
+//     });
+// });
 </script> 

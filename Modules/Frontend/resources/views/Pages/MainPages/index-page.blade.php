@@ -1,5 +1,4 @@
 @extends('frontend::layouts.master', ['isSwiperSlider' => true ,'bodyClass'=>"custom-header-relative","isSelect2"=>true])
-
 @section('content')
 <section id="home-banner-slider" class="iq-main-slider p-0 swiper banner-home-swiper overflow-hidden"
     data-swiper="home-banner-slider">
@@ -201,6 +200,60 @@ document.getElementById('videoModal').addEventListener('show.bs.modal', function
     document.getElementById('youtubeVideo').src = "";
 });
 });
+
+
+
+// $(document).ready(function () {
+//     let activeRequest = null;
+//     let hoverTimeout = null;
+
+//     $('.swiper-slide.video-popup-open').each(function () {
+//         const $this = $(this);
+
+//         $this.on('mouseenter', function () {
+//             const movieId = $this.data('movie-id');
+
+//             // Abort any ongoing AJAX request
+//             if (activeRequest) activeRequest.abort();
+
+//             hoverTimeout = setTimeout(function () {
+//                 activeRequest = $.ajax({
+//                     url: "{{ route('get.video.details') }}",
+//                     type: 'GET',
+//                     data: { movieId: movieId },
+//                     success: function (response) {
+//                         console.log("Video URL:", response.videoUrl);
+
+//                         if ($this.is(':hover') && response.videoUrl) {
+//                             // Set video source and open the modal
+//                             $('#modalVideoSource').attr('src', response.videoUrl);
+//                             $('#modalVideo')[0].load(); // Load the video
+//                             $('#videoModalhover').modal('show'); // Show modal
+//                         }
+//                     },
+//                     error: function (xhr, status, error) {
+//                         console.error("Error fetching video:", error);
+//                     }
+//                 });
+//             }, 3000); // Add delay to avoid unnecessary requests
+//         });
+
+//         $this.on('mouseleave', function () {
+//             // Clear hover timeout and abort any ongoing request
+//             if (hoverTimeout) clearTimeout(hoverTimeout);
+//             if (activeRequest) activeRequest.abort();
+
+//             // Close the modal and reset video source
+//             $('#videoModalhover').modal('hide');
+//         });
+//     });
+
+//     // Reset video when modal is hidden
+//     $('#videoModalhover').on('hidden.bs.modal', function () {
+//         $('#modalVideo')[0].pause(); // Pause video playback
+//         $('#modalVideoSource').attr('src', ''); // Clear video source
+//     });
+// });
 
 
 </script>
