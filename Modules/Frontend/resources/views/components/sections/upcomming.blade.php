@@ -9,7 +9,7 @@
             </div>
             <div class="card-style-slider">
                 <div class="position-relative swiper swiper-card" data-slide="6" data-laptop="6" data-tab="3"
-                    data-mobile="2" data-mobile-sm="2" data-autoplay="false" data-loop="true" data-navigation="true"
+                    data-mobile="2" data-mobile-sm="2" data-autoplay="false"  data-navigation="true"
                     data-pagination="true">
                     <ul class="p-0 swiper-wrapper m-0  list-inline">
                     @foreach($category->categoryname as $data)
