@@ -2,16 +2,14 @@
 <div class="iq-card card-hover">
     <div class="block-images position-relative w-100">
         <div class="video-and-image-block">
-        <div class="img-box w-100">
-        <a href="{{ url('/movie-detail/' . ($movieId ?? '')) }}" class="position-absolute top-0 bottom-0 start-0 end-0"></a>
-        <img src="{{ $cardImage }}" alt="movie-card" class="img-fluid object-cover w-100  border-0" loading="lazy" />
+            <div class="img-box w-100">
+                <a href="{{ url('/movie-detail/' . ($movieId ?? '')) }}" class="position-absolute top-0 bottom-0 start-0 end-0"></a>
+                <img src="{{ $cardImage }}" alt="movie-card" class="img-fluid object-cover w-100 border-0" loading="lazy" />
+            </div>
+            <div class="video-box w-100" style="display: none;">
+                <video src=""  id="my-video" class="video-js vjs-big-play-centered w-100" controls muted></video>
+            </div>
         </div>
-            <!-- <div class="video-box w-100">
-                <video src="" class="img-fluid object-cover w-100  border-0" id="my-video"></video>
-            </div> -->
-         </div>
-
-
         <div class="card-description with-transition">
             <div class="cart-content">
                 <div class="content-left">
@@ -89,18 +87,5 @@
         </div>
     </div>
 </div>
-<script>
-  document.querySelector('.video-box').addEventListener('mouseenter', function () {
-    const video = document.getElementById('my-video');
-    if (!video.src) {
-      video.src = 'https://www.example.com/path-to-your-video.mp4'; // Replace with your video URL
-      video.load(); // Load the video when the src is appended
-    }
-  });
 
-  document.querySelector('.video-box').addEventListener('mouseleave', function () {
-    const video = document.getElementById('my-video');
-    video.pause(); // Optional: Pause the video on hover out
-  });
-</script>
 

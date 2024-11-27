@@ -13,7 +13,7 @@
                     data-mobile="2" data-mobile-sm="2" data-autoplay="false"  data-navigation="true"
                     data-pagination="true">
                     <ul class="p-0 swiper-wrapper m-0  list-inline">
-                    @foreach($category->categoryname as $data)
+                    @foreach($category->categoryname as $key => $data)
                     <li class="swiper-slide video-popup-open"  data-movie-id="{{ Crypt::encrypt($data->movie->id) }}">
                             @include('frontend::components.cards.card-style', [
                                 'cardImage' => asset($data->movie->bgsm_image),
@@ -55,6 +55,33 @@
 </div>
 
 <script>
+ 
+ $('.video-and-image-block').hover(
+    function () {
+        const videoBoxhover = $(this).find('.video-box'); 
+        const videoBox = $(this).find('.video-box video'); 
+        const videoSrc = "{{ asset('trailer/10665530-uhd_4096_2160_25fps.mp4') }}";
+        videoBoxhover.css('display', 'block'); 
+        if (videoBox.length) {
+            videoBox.attr('src', videoSrc); 
+            videoBox[0].play(); // Play video
+        }
+    },
+    function () {
+        const videoBoxhover = $(this).find('.video-box'); 
+        const videoBox = $(this).find('.video-box video'); 
+        if (videoBox.length) {
+            videoBox[0].pause(); 
+            videoBox.attr('src', ''); 
+        }
+        videoBoxhover.css('display', 'none');
+    }
+);
+
+
+
+
+
 // $(document).ready(function () {
 //     let activeRequest = null;
 //     let hoverTimeout = null;
