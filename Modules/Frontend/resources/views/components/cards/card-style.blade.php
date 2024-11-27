@@ -7,7 +7,7 @@
                 <img src="{{ $cardImage }}" alt="movie-card" class="img-fluid object-cover w-100 border-0" loading="lazy" />
             </div>
             <div class="video-box w-100" style="display: none;">
-                <video src=""  id="my-video"  controls muted></video>
+                <video src=""  id="my-video" class="video-js vjs-big-play-centered w-100" controls muted></video>
             </div>
         </div>
         <div class="card-description with-transition">
