@@ -3,13 +3,13 @@
     <div class="block-images position-relative w-100">
         <div class="video-and-image-block">
             <div class="img-box w-100">
-                <a href="{{ url('/movie-detail/' . ($movieId ?? '')) }}" class="position-absolute top-0 bottom-0 start-0 end-0">
+                <a href="{{ url('/movie-detail/' . ($movieId ?? '')) }}" class="position-absolute top-0 bottom-0 start-0 end-0"></a>
                 <img src="{{ $cardImage }}" alt="movie-card" class="img-fluid object-cover w-100 border-0" loading="lazy" />
             </div>
             <div class="video-box w-100" style="display: none;">
                 <video src=""  id="my-video" class="video-js vjs-big-play-centered w-100" controls muted></video>
             </div>
-            </a>
+            
         </div>
         <div class="card-description with-transition">
             <div class="cart-content">
