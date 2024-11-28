@@ -10,7 +10,7 @@ class DashboardController extends Controller
     public function index(Request $request)
     {     
         $user = Auth::user();
-        if($user->role == 1){
+        if($user->role == 2){
             return view('frontend::Pages.MerchandiseShopPages.my-account-page');
         }else{
             $title = 'Home';
