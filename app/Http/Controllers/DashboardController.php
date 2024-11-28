@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\UserPurchaseMovie;
 
 class DashboardController extends Controller
 {
     public function index(Request $request)
     {     
-        $user = Auth::user();
+        $user = auth()->user();
+        $purchasemovies = UserPurchaseMovie::with('moviedata')->where('user_id', $user->id)->get();
         if($user->role == 2){
-            return view('frontend::Pages.MerchandiseShopPages.my-account-page');
+            return view('frontend::Pages.MerchandiseShopPages.my-account-page',compact('user','purchasemovies'));
         }else{
             $title = 'Home';
             return view('DashboardPages.IndexPage', compact('title'));

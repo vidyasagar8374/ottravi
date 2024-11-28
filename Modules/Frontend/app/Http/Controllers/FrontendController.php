@@ -561,9 +561,11 @@ public function store(Request $request)
     {
         if(auth()->user()){
             $user = auth()->user();
+          
             $purchasemovies = UserPurchaseMovie::with('moviedata')->where('user_id', $user->id)->get();
             // dd($purchasemovies);
         }else{
+            // dd($user);
             $user = null;
             $purchasemovies = [];
         }
