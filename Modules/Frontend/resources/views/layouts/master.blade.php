@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>{{ config('app.name', 'Laravel') }} - Responsive Bootstrap 5 Admin Dashboard Template</title>
+    <title>{{ config('app.name', 'Laravel') }} - Entertiment The World</title>
 
     @include('frontend::components.partials.head.plugins')
     {{-- Vite CSS --}}
