@@ -430,7 +430,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-user border-0 p-0 m-0" aria-labelledby="navbarDropdown">
                                     <li class="user-info d-flex align-items-center gap-3 mb-3">
-                                        <img src="{{ asset('/frontend/images/user/user1.webp') }}" class="img-fluid" alt="" loading="lazy" />
+                                        <img src="{{ asset('/frontend/images/user/user-ott.jpg') }}" class="img-fluid" alt="" loading="lazy" />
                                         <span class="font-size-14 fw-500 text-capitalize text-white">{{ auth()->user()->first_name }}</span>
                                     </li>
                                     <li>

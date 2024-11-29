@@ -51,7 +51,7 @@
                         </div>
                         @endif
                     <div class="card-header bg-primary text-white text-center">
-                        <h4>Payment Gateway</h4>
+                        <h4>Payment Details</h4>
                     </div>
                     <div class="card-body">
                         <div class="text-center">
@@ -133,7 +133,6 @@
                     },
                     success: function(data) {
                         if (data.success) {
-                            alert('Payment successful!');
                             // return to route
                             window.location.href = "{{ url('/movie-detail/') }}/" + encrptmovieId;  
                         } else {

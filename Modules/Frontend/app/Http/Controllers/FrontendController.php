@@ -276,18 +276,14 @@ public function store(Request $request)
         // dd($request->id);
         $movieId = $request->id;
         try {
-            // Decrypt the ID
             $id = Crypt::decrypt($movieId);
-            // dd($id);
             $movie = Movie::findOrFail($id);
-            // dd($movie);
-            $ottdetails = '';
             if($movie){
+
                 $ottdetails = Movie::with('ottdetails.ott')->where('id',$id)->get();
                 //  dd($ottdetails);
-            }
-            if(auth()->user()){
-                $userpurchasedetailsQuery = videoTracking::with('moviedata')
+                if(auth()->check()){
+                    $userpurchasedetailsQuery = videoTracking::with('moviedata')
                     ->join('user_purchase_movies', 'user_purchase_movies.movie_id', '=', 'video_trackings.movie_id')
                     ->where('user_purchase_movies.user_id', auth()->user()->id)
                     ->where('user_purchase_movies.movie_id', $id)
@@ -306,9 +302,18 @@ public function store(Request $request)
                         });
                     });
                 $userpurchasedetails = $userpurchasedetailsQuery->first();
-            }
+                } else{
+                    $userpurchasedetails = [];
+                    $ottdetails = [];
+    
+                }
+           
+                   
+                 }
                 else{
                 $userpurchasedetails = [];
+                $ottdetails = [];
+
             }
             /* 
                 SELECT * 

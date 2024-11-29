@@ -18,11 +18,11 @@
                     <h5 class="iq-title text-capitalize">
                         <a href="/movie-detail/{{ $movieId ?? '' }}">{{ $cardTitle }}</a>
                     </h5>
-                    <div class="movie-time d-flex align-items-center my-2">
+                    <!-- <div class="movie-time d-flex align-items-center my-2">
                         <span class="movie-time-text font-normal">{{ $movieTime }}</span>
-                    </div>
+                    </div> -->
                 </div>
-                <div class="watchlist">
+                <!-- <div class="watchlist">
                     <a href="playlist" class="watch-list-not">
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                             class="icon-10">
@@ -31,11 +31,12 @@
                         </svg>
                         <span class="watchlist-label"> {{__('otthome.watchlist')}} </span>
                     </a>
-                </div>
+                </div> -->
             </div>
         </div>
+        <!-- social info -->
         <div class="block-social-info align-items-center">
-            <ul class="p-0 m-0 d-flex gap-2 music-play-lists">
+            <!-- <ul class="p-0 m-0 d-flex gap-2 music-play-lists">
                 <li class="share position-relative d-flex align-items-center text-center mb-0">
                     <span class="w-100 h-100 d-inline-block bg-transparent">
                         <i class="fas fa-share-alt"></i>
@@ -80,13 +81,14 @@
                         </div>
                     </div>
                 </li>
-            </ul>
-            <div class="iq-button">
-                <a href="movie-detail" class="btn text-uppercase position-relative rounded-circle">
+            </ul> -->
+            <div class="iq-button d-flex justify-content-end">
+                <a href="/movie-detail/{{ $movieId ?? '' }}" class="btn text-uppercase rounded-circle">
                     <i class="fa-solid fa-play ms-0"></i>
                 </a>
             </div>
         </div>
+        <!-- end social info -->
     </div>
 </div>
 

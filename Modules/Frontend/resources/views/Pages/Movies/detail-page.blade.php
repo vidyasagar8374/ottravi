@@ -105,8 +105,8 @@
         </div>
     </div>
 
-
-    <div class="cast-tabs">
+    <!-- full movie description -->
+    <!-- <div class="cast-tabs">
         <div class="container-fluid">
             <div class="content-details trending-info g-border iq-rtl-direction">
                 <ul class="iq-custom-tab tab-bg-fill d-flex nav nav-pills mb-5 " role="tablist">
@@ -219,8 +219,8 @@
                 </div>
             </div>
         </div>
-    </div>
-
+    </div> -->
+<!-- end ful -->
 
     <!-- below movies recomended -->
 

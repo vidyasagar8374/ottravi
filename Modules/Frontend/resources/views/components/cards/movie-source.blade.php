@@ -1,4 +1,4 @@
-<div class="content-details trending-info">
+<!-- <div class="content-details trending-info">
     <ul class="iq-custom-tab tab-bg-gredient-center d-flex nav nav-pills align-items-center text-center mb-5 justify-content-center list-inline"
         role="tablist">
         <li class="nav-item">
@@ -197,4 +197,4 @@
         </div>
 
     </div>
-</div>
+</div> -->

@@ -7,10 +7,10 @@
                         @include('frontend::components.brand.logo')
                     </div>
                     <p class="mb-4 font-size-14">{{__('frontendfooter.email_us')}} <span
-                            class="text-white">{{__('frontendfooter.customer@stremit')}}</span></p>
+                            class="text-white">p19movie@gmail.com</span></p>
                     <p class="text-uppercase letter-spacing-1 font-size-14 mb-1">
                         {{__('frontendfooter.customer_services')}}</p>
-                    <p class="mb-0 contact text-white">+ (480) 555-0103</p>
+                    <p class="mb-0 contact text-white">+ (91) 964 250 0019</p>
                 </div>
                 <div class="col-xl-2 col-lg-6 mb-5 mb-lg-0">
                     <h4 class="footer-link-title">{{__('frontendfooter.quick_links')}} </h4>
@@ -80,22 +80,22 @@
                         <span class="font-size-14 me-2">{{__('frontendfooter.follow_us')}}</span>
                         <ul class="p-0 m-0 list-unstyled widget_social_media">
                             <li class="">
-                                <a href="https://www.facebook.com/" class="position-relative">
+                                <a href="https://www.facebook.com/" class="position-relative" target="_blank">
                                     <i class="fab fa-facebook"></i>
                                 </a>
                             </li>
                             <li class="">
-                                <a href="https://twitter.com/" class="position-relative">
+                                <a href="https://twitter.com/" class="position-relative" target="_blank">
                                     <i class="fab fa-twitter"></i>
                                 </a>
                             </li>
                             <li class="">
-                                <a href="https://github.com/" class="position-relative">
+                                <a href="https://github.com/" class="position-relative" target="_blank">
                                     <i class="fab fa-github"></i>
                                 </a>
                             </li>
                             <li class="">
-                                <a href="https://www.instagram.com/" class="position-relative">
+                                <a href="https://www.instagram.com/" class="position-relative" target="_blank">
                                     <i class="fab fa-instagram"></i>
                                 </a>
                             </li>
@@ -123,11 +123,12 @@
                             <a href="{{ route('frontend.play_list') }}"> {{__('frontendfooter.watch_list')}} </a>
                         </li>
                     </ul>
-                    <p class="font-size-14">© <span class="currentYear">2023</span> <span
-                            class="text-primary">STREAMIT</span>. {{__('frontendfooter.desc')}}</p>
+                    <p class="font-size-14">© <span class="currentYear">2023</span> <a href="http://vsdev.in" target="_blank"><span 
+                            class="text-primary">vsdev</span></a>. {{__('frontendfooter.desc')}}</p>
                 </div>
                 <div class="col-md-3"></div>
-                <div class="col-md-3">
+                <!-- download apps -->
+                <!-- <div class="col-md-3">
                     <h6 class="font-size-14 pb-1">{{__('frontendfooter.download_app')}}</h6>
                     <div class="d-flex align-items-center">
                         <a class="app-image" href="#">
@@ -140,7 +141,8 @@
                                 alt="app-store" />
                         </a>
                     </div>
-                </div>
+                </div> -->
+                <!-- download apps -->
             </div>
         </div>
     </div>

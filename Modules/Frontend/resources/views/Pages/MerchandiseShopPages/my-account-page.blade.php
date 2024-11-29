@@ -21,25 +21,25 @@ __('frontendheader.my_account')])
                                         class="fas fa-list"></i><span
                                         class="ms-2">{{__('frontendshop.orders')}}</span></button>
                             </li>
-                            <li class="py-3 nav-item">
+                            <!-- <li class="py-3 nav-item">
                                 <button class="nav-link p-0 bg-transparent" data-bs-toggle="tab"
                                     data-bs-target="#downloads" type="button" role="tab" aria-selected="true"><i
                                         class="fas fa-download"></i><span
                                         class="ms-2">{{__('frontendshop.downloads')}}</span></button>
-                            </li>
-                            <li class="py-3 nav-item">
+                            </li> -->
+                            <!-- <li class="py-3 nav-item">
                                 <button class="nav-link p-0 bg-transparent" data-bs-toggle="tab"
                                     data-bs-target="#address" type="button" role="tab" aria-selected="true"><i
                                         class="fas fa-map-marker-alt"></i><span
                                         class="ms-2">{{__('frontendshop.address')}}</span></button>
-                            </li>
+                            </li> -->
                             <li class="py-3 nav-item">
                                 <button class="nav-link p-0 bg-transparent" data-bs-toggle="tab"
                                     data-bs-target="#account-details" type="button" role="tab" aria-selected="true"><i
                                         class="fas fa-user"></i><span
                                         class="ms-2">{{__('frontendshop.account_details')}}</span></button>
                             </li>
-                            <li class="py-3 nav-item">
+                            <!-- <li class="py-3 nav-item">
                                 <a href="{{ route('frontend.play_list') }}">
                                 <button class="nav-link p-0 bg-transparent" data-bs-toggle="tab"
                                     data-bs-target="#account-details" type="button" role="tab" aria-selected="true"><i
@@ -47,7 +47,7 @@ __('frontendheader.my_account')])
                                         class="ms-2">{{__('frontendheader.watchlist')}}</span></button>
                                 </a>
                                
-                            </li>
+                            </li> -->
                                 <li class="pt-3 nav-item">
                                     <a href="{{ route('logout') }}" 
                                     onclick="event.preventDefault(); 
@@ -83,6 +83,7 @@ __('frontendheader.my_account')])
                     <div class="tab-pane fade" id="orders" role="tabpanel">
                         <div class="orders-table text-body p-4">
                             <div class="table-responsive">
+
                                 <table class="table">
                                     <thead>
                                         <tr class="border-bottom">
@@ -94,8 +95,9 @@ __('frontendheader.my_account')])
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @if($purchasemovies)
+                                        @foreach($purchasemovies as $order)
                                         <tr class="border-bottom">
-                                            @foreach($purchasemovies as $order)
                                             <td class="text-primary fs-6"># {{$order->id}}</td>
                                             <td>{{ $order->purchase_date }}</td>
                                             <td>Success</td>
@@ -105,31 +107,38 @@ __('frontendheader.my_account')])
                                                     @include(
                                                     'frontend::components.widgets.custom-button',
                                                     [
-                                                    'buttonTitle' =>__('frontendshop.pay'),
+                                                    'buttonTitle' =>'Recipt',
                                                     'buttonUrl' => 'javascript:void(0)',
                                                     ]
                                                     )
 
-                                                    @include(
+                                                    <!-- @include(
                                                     'frontend::components.widgets.custom-button',
                                                     [
                                                     'buttonTitle' =>__('frontendshop.view'),
                                                     'buttonUrl' => 'javascript:void(0)',
                                                     ]
-                                                    )
+                                                    ) -->
 
-                                                    @include(
+                                                    <!-- @include(
                                                     'frontend::components.widgets.custom-button',
                                                     [
                                                     'buttonTitle' =>__('frontendshop.cancel'),
                                                     'buttonUrl' => 'javascript:void(0)',
                                                     ]
-                                                    )
+                                                    ) -->
 
                                                 </div>
                                             </td>
                                         </tr>
                                         @endforeach
+                                        @else
+                                        <tr class="border-bottom">
+                                            <td colspan="5" class="text-center">No orders found</td>
+                                        </tr>
+
+                                       
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
