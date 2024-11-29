@@ -63,6 +63,9 @@
                             <table class="table table-borderless">
                                 <tbody>
                                     <tr>
+                                        <td><strong>Movie Name:</strong></td><td>{{ $movie->title }}</td>
+                                    </tr>
+                                    <tr>
                                         <td><strong>Amount:</strong></td>
                                         <td>{{ $movie->price }}</td>
                                     </tr>
@@ -77,28 +80,81 @@
                                 </tbody>
                                         
                             </table>
-                            <form action="{{ route('razorpay.payment.store') }}" method="POST">
-                                @csrf
-                                <script
-                                    src="https://checkout.razorpay.com/v1/checkout.js"
-                                    data-key="{{ env('RAZORPAY_KEY') }}"
-                                    data-amount="{{ $movie->price }} * 100"
-                                    data-buttontext="Pay Now"
-                                    data-name="GeekyAnts Official"
-                                    data-description="Razorpay payment"
-                                    data-image="{{ asset('movieslist/p.logo.jpeg') }}"
-                                    data-prefill.name="{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}"
-                                    data-prefill.email="{{ Auth::user()->email }}"
-                                    data-theme.color="#ff7529"
-                                    data-notes.movie_id="{{ $movie->id }}"
-                                ></script>
-                            </form>
+                           
+
                         </div>
+                        <div class="details-form-btn">
+                                <button type="button" class="formbtn btn btn-primary w-100">Pay Now</button>
+                            </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <input type="hidden" id="movie_id" value="{{ Crypt::encrypt($movie->id) }}">
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.querySelector('.formbtn').addEventListener('click', function(e) {
+        
+        encrptmovieId = document.getElementById('movie_id').value;
+        e.preventDefault();
+
+        var options = {
+            "key": "{{ env('RAZORPAY_KEY') }}",  // Razorpay key
+            "amount": {{ $movie->price * 100 }}, // Amount in paise
+            "currency": "INR",
+            "name": "P19",
+            "description": "P19",
+            "image": "{{ asset('movieslist/p.logo.jpeg') }}", // Image URL
+            "prefill": {
+                "name": "{{ Auth::user()->first_name }}", // User name
+                "email": "{{ Auth::user()->email }}",     // User email
+            },
+            "notes": {
+                "movie_id": "{{ $movie->id }}" // Movie ID
+            },
+            "theme": {
+                "color": "#ff7529"
+            },
+            "handler": function (response) {
+                // AJAX call to store payment details
+                $.ajax({
+                    url: "{{ route('razorpay.payment.store') }}",
+                    method: 'POST',
+                    dataType: 'json',
+                    data: {
+                        razorpay_payment_id: response.razorpay_payment_id, // Payment ID
+                        movie_id: "{{ $movie->id }}" // Movie ID
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // CSRF token
+                    },
+                    success: function(data) {
+                        if (data.success) {
+                            alert('Payment successful!');
+                            // return to route
+                            window.location.href = "{{ url('/movie-detail/') }}/" + encrptmovieId;  
+                        } else {
+                            alert('Payment failed: ' + data.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        alert('An error occurred. Please try again.');
+                    }
+                });
+            }
+        };
+
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    });
+</script>
+
+
+
 
     @endsection
 

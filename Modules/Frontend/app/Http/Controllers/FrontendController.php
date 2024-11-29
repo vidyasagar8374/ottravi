@@ -109,73 +109,126 @@ public function updateplaytrack(Request $request)
         
 }
 
+// public function store(Request $request)
+// {
+//     $input = $request->all();
+    
+//     // Check if Razorpay payment ID is provided
+//     if (empty($input['razorpay_payment_id'])) {
+//         Session::put('error', 'Payment ID is missing.');
+//         return redirect()->back();
+//     }
+
+//     $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+
+//     try {
+//         // Start database transaction
+//         DB::beginTransaction();
+
+//         $payment = $api->payment->fetch($input['razorpay_payment_id']);
+//         $movieId = $payment->notes['movie_id'];
+//         // dd($movieId);
+//         $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount' => $payment['amount']));
+
+//         $paymentRecord = Payment::create([
+//             'r_payment_id' => $response['id'],
+//             'method' => $response['method'],
+//             'currency' => $response['currency'],
+//             'user_email' => $response['email'],
+//             'amount' => $response['amount'] / 100, 
+//             'json_response' => json_encode((array) $response)
+//         ]);
+       
+//     //    dd($paymentRecord_id);
+
+//         if (!$paymentRecord) {
+//             throw new \Exception('Failed to save payment record.');
+//         }
+
+//         $movie = Movie::find($movieId);
+//         if (!$movie) {
+//             throw new \Exception('Movie not found.');
+//         }
+//         $paymentRecord_id = $paymentRecord->id;
+//         $insertpurchase = UserPurchaseMovie::create([
+//             'user_id' => auth()->user()->id,
+//             'movie_id' => $movie->id,
+//             'ticket_id' => $paymentRecord_id,
+//             'is_active' => 1,
+//             'purchase_date' => Carbon::now(), // Current date and time
+//             'expire_date' => Carbon::now()->addDays(env('PURCHASE_EXPIRY_DAYS')), // One month from now
+//             'is_watched' => 0
+//         ]);
+//         // dd($insertpurchase);
+//         if (!$insertpurchase) {
+//             throw new \Exception('Failed to create movie purchase.');
+//         }
+
+
+//         DB::commit();
+
+//         // Success message
+      
+//         return redirect()->back()->with('success', 'Payment successful!');
+
+//     } catch (\Exception $e) {
+//         // Rollback the transaction if any exception occurs
+//         DB::rollBack();
+//         Session::put('error', $e->getMessage());
+//         return redirect()->back();
+//     }
+// }
+
 public function store(Request $request)
 {
-    $input = $request->all();
-    
-    // Check if Razorpay payment ID is provided
-    if (empty($input['razorpay_payment_id'])) {
-        Session::put('error', 'Payment ID is missing.');
-        return redirect()->back();
-    }
+    $razorpay_id = $request->razorpay_payment_id;
+    // dd($razorpay_id);
+    $movie_id = $request->movie_id;
 
-    $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+    if (!empty($razorpay_id)) {
+        try {
+            $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
 
-    try {
-        // Start database transaction
-        DB::beginTransaction();
+            $payment = $api->payment->fetch($razorpay_id);
 
-        $payment = $api->payment->fetch($input['razorpay_payment_id']);
-        $movieId = $payment->notes['movie_id'];
-        // dd($movieId);
-        $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount' => $payment['amount']));
+            $paymentRecord = Payment::create([
+                'r_payment_id' => $payment['id'],
+                'method' => $payment['method'],
+                'currency' => $payment['currency'],
+                'user_email' => $payment['email'],  
+                'amount' => $payment['amount'] / 100,  
+                'json_response' => json_encode((array) $payment)
+            ]);
+            if ($paymentRecord) {
+                $paymentRecord_id = $paymentRecord->id;
+                        $insertpurchase = UserPurchaseMovie::create([
+                            'user_id' => auth()->user()->id,
+                            'movie_id' => $movie_id,
+                            'ticket_id' => $paymentRecord_id,
+                            'is_active' => 1,
+                            'purchase_date' => Carbon::now(), // Current date and time
+                            'expire_date' => Carbon::now()->addDays(env('PURCHASE_EXPIRY_DAYS')), // One month from now
+                            'is_watched' => 0
+                        ]);
+                        // create videoTracking record
+                        $videoTracking = videoTracking::create([
+                            'user_id' => auth()->user()->id,
+                            'movie_id' => $movie_id,
+                            'paused_length' => 0,
+                            'total_length' => 0,
+                        ]);
+                }
 
-        $paymentRecord = Payment::create([
-            'r_payment_id' => $response['id'],
-            'method' => $response['method'],
-            'currency' => $response['currency'],
-            'user_email' => $response['email'],
-            'amount' => $response['amount'] / 100, 
-            'json_response' => json_encode((array) $response)
-        ]);
-       
-    //    dd($paymentRecord_id);
+            return response()->json(['success' => true]);
+            // // session()->flash('success', 'Contact form submitted successfully!');
+            // return redirect()->view('frontend.single-temple');
 
-        if (!$paymentRecord) {
-            throw new \Exception('Failed to save payment record.');
+        } catch (\Exception $e) {
+           
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
         }
-
-        $movie = Movie::find($movieId);
-        if (!$movie) {
-            throw new \Exception('Movie not found.');
-        }
-        $paymentRecord_id = $paymentRecord->id;
-        $insertpurchase = UserPurchaseMovie::create([
-            'user_id' => auth()->user()->id,
-            'movie_id' => $movie->id,
-            'ticket_id' => $paymentRecord_id,
-            'is_active' => 1,
-            'purchase_date' => Carbon::now(), // Current date and time
-            'expire_date' => Carbon::now()->addDays(env('PURCHASE_EXPIRY_DAYS')), // One month from now
-            'is_watched' => 0
-        ]);
-        // dd($insertpurchase);
-        if (!$insertpurchase) {
-            throw new \Exception('Failed to create movie purchase.');
-        }
-
-
-        DB::commit();
-
-        // Success message
-      
-        return redirect()->back()->with('success', 'Payment successful!');
-
-    } catch (\Exception $e) {
-        // Rollback the transaction if any exception occurs
-        DB::rollBack();
-        Session::put('error', $e->getMessage());
-        return redirect()->back();
+    } else {
+        return response()->json(['success' => false, 'message' => 'Payment ID or signature is missing.']);
     }
 }
 
@@ -225,7 +278,9 @@ public function store(Request $request)
         try {
             // Decrypt the ID
             $id = Crypt::decrypt($movieId);
+            // dd($id);
             $movie = Movie::findOrFail($id);
+            // dd($movie);
             $ottdetails = '';
             if($movie){
                 $ottdetails = Movie::with('ottdetails.ott')->where('id',$id)->get();
@@ -250,11 +305,6 @@ public function store(Request $request)
                                     ->where('user_purchase_movies.after_expire', '>=', Carbon::now());
                         });
                     });
-
-                // Debug SQL query and bindings
-                    
-
-                // Retrieve the result after debugging
                 $userpurchasedetails = $userpurchasedetailsQuery->first();
             }
                 else{
