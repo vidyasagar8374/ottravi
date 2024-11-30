@@ -83,7 +83,7 @@
                 </li>
             </ul> -->
             <div class="iq-button d-flex justify-content-end">
-                <a href="/movie-detail/{{ $movieId ?? '' }}" class="btn text-uppercase rounded-circle">
+                <a href="{{ url('/movie-detail/' . ($movieId ?? '')) }}" target="_blank" class="btn text-uppercase rounded-circle">
                     <i class="fa-solid fa-play ms-0"></i>
                 </a>
             </div>

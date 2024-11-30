@@ -28,26 +28,26 @@
     </div>
 
     <div class="movie-purchase-btns pt-5">
-    <div class="container">
+    <div class="container ms-5">
     <div class="row justify-content-start">
         @if($userpurchasedetails)
         @else
         @if($movie->getticket)
         <div class="col-auto">
         <a href="{{ url('/initiate-payment/' . Crypt::encrypt($movie->id)) }}">
-                <button id="rzp-button" type="button" class="btn btn-outline-secondary">Get Tickets</button>
+                <button id="rzp-button" type="button" class="btn  btn-success text-white">Get Tickets</button>
             </a>         
         </div>
         @endif 
         @endif
         @if($movie->officalsite)
         <div class="col-auto">
-           <a href="{{ $movie->officalsite }}" target="_blank"><button type="button" class="btn btn-outline-secondary">Official Site</button></a> 
+           <a href="{{ $movie->officalsite }}" target="_blank"><button type="button" class="btn btn-info text-white">Official Site</button></a> 
         </div>
         @endif
         @if($movie->ott)
         <div class="col-auto">
-          <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModalLong">On OTT's</button>
+          <button type="button" class="btn  btn-warning text-white" data-bs-toggle="modal" data-bs-target="#exampleModalLong">On OTT's</button>
         </div>
         @endif
     </div>
