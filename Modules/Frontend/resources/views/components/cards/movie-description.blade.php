@@ -19,14 +19,14 @@
                     <span class="text-white ms-2">{{ $imdbRating }} (imdb)</span>
                 </div>
             </div>
-            <ul class="p-0 mt-2 list-inline d-flex flex-wrap movie-tag">
+            <!-- <ul class="p-0 mt-2 list-inline d-flex flex-wrap movie-tag">
                 <li class="trending-list"><a class="text-primary"
                         href="{{route('frontend.view_all')}}">{{__('frontendhome.action')}}</a></li>
                 <li class="trending-list"><a class="text-primary"
                         href="{{route('frontend.view_all')}}">{{__('frontendhome.adventure')}}</a></li>
                 <li class="trending-list"><a class="text-primary"
                         href="{{route('frontend.view_all')}}">{{__('otthome.drama')}}</a></li>
-            </ul>
+            </ul> -->
             <div class="d-flex flex-wrap align-items-center text-white text-detail flex-wrap mb-4">
                 <span class="badge bg-secondary">{{ $movieType }}</span>
                 <span class="ms-3 font-Weight-500 genres-info">{{ $movieDuration }}</span>
@@ -68,7 +68,7 @@
                 </div>
             </div> -->
             <!-- end play list -->
-            <ul class="iq-blogtag list-unstyled d-flex flex-wrap align-items-center gap-3 p-0">
+            <!-- <ul class="iq-blogtag list-unstyled d-flex flex-wrap align-items-center gap-3 p-0">
                 <li class="iq-tag-title text-primary mb-0">
                     <i class="fa fa-tags" aria-hidden="true"></i>
                     Tags:
@@ -79,7 +79,7 @@
                         class="text-secondary">,</span>
                 </li>
                 <li><a class="title" href="{{ route('frontend.view_all') }}">{{__('otthome.drama')}}</a></li>
-            </ul>
+            </ul> -->
         </div>
         <div class="trailor-video col-md-3 col-12 mt-lg-0 mt-4 mb-md-0 mb-1 text-lg-right">
             <a data-fslightbox="html5-video" href="https://www.youtube.com/watch?v=QCGq1epI9pQ" target="_blank"

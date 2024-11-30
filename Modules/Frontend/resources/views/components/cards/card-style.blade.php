@@ -82,11 +82,11 @@
                     </div>
                 </li>
             </ul> -->
-            <div class="iq-button d-flex justify-content-end">
+            <!-- <div class="iq-button d-flex justify-content-end">
                 <a href="{{ url('/movie-detail/' . ($movieId ?? '')) }}" target="_blank" class="btn text-uppercase rounded-circle">
                     <i class="fa-solid fa-play ms-0"></i>
                 </a>
-            </div>
+            </div> -->
         </div>
         <!-- end social info -->
     </div>

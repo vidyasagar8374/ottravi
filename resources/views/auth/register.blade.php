@@ -74,7 +74,7 @@
             </div>
             </div>
             </div>
-            <div class="form-check my-2"><input type="radio" id="customRadio1" name="customRadio"
+            <!-- <div class="form-check my-2"><input type="radio" id="customRadio1" name="customRadio"
                 class="form-check-input"><label class="form-check-label" for="customRadio1">Premium-$39 /
                 3 Months with a 5 day free trial</label></div>
           <div class="form-check"><input type="radio" id="customRadio2" name="customRadio"
@@ -86,7 +86,7 @@
                 <x-button class="btn btn-btn btn-primary my-2">
                     {{ __('Sign Up') }}
                 </x-button>
-            </div>
+            </div> -->
         </form>
         </div>
         </div>
