@@ -11,22 +11,36 @@
                 <ul class="p-0 swiper-wrapper m-0  list-inline">
            
                     @foreach($continuewatches as $continuewatch)
-                        @php
+                    @php
+                            // Function to convert seconds to HH:MM:SS format
+                            function formatTime($seconds) {
+                            $hours = floor($seconds / 3600); // Calculate hours
+                            $minutes = floor(($seconds % 3600) / 60); // Calculate minutes
+                            $seconds = $seconds % 60; // Calculate remaining seconds
+
+                            // Return time in HH:MM:SS format
+                            return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+                            }
+
                             // Calculate progress as a percentage
                             $progress = $continuewatch->total_length > 0 
-                                        ? ($continuewatch->paused_length / $continuewatch->total_length) * 100 
-                                        : 0;
-                            // Round paused_length and total_length
-                            $roundedPausedLength = round($continuewatch->paused_length, 0); // Round to 0 decimal places
-                            $roundedTotalLength = round($continuewatch->total_length, 0); // Round to 0 decimal places
+                            ? ($continuewatch->paused_length / $continuewatch->total_length) * 100 
+                            : 0;
+
+                            // Format paused_length and total_length as time
+                            $formattedPausedLength = formatTime($continuewatch->paused_length);
+                            $formattedTotalLength = formatTime($continuewatch->total_length);
+
                             $movieid = Crypt::encrypt($continuewatch->movie_id);
-                        @endphp
+                         @endphp
+                      
+                        $movieid = $continuewatch->moviedata->id;
                         <li class="swiper-slide">
                             
                                 @include('frontend::components.cards.continue-watch-card', [
                                     'imagePath' => asset($continuewatch->moviedata->bgsm_image),
                                     'progressValue' => round($progress, 2) . "%", // Rounded progress
-                                    'dataLeftTime' => $roundedPausedLength . " of " . $roundedTotalLength . " m",
+                                    'dataLeftTime' => $formattedPausedLength . " of " . $formattedTotalLength,
                                     'movieId' => $movieid
                                 ])
                             
