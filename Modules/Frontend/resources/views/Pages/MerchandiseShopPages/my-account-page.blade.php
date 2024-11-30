@@ -84,63 +84,42 @@ __('frontendheader.my_account')])
                         <div class="orders-table text-body p-4">
                             <div class="table-responsive">
 
-                                <table class="table">
-                                    <thead>
-                                        <tr class="border-bottom">
-                                            <th class="fw-bolder p-3">{{__('frontendshop.order')}}</th>
-                                            <th class="fw-bolder p-3">{{__('frontendshop.date')}}</th>
-                                            <th class="fw-bolder p-3">{{__('frontendshop.status')}}</th>
-                                            <th class="fw-bolder p-3">{{__('frontendshop.total')}}</th>
-                                            <th class="fw-bolder p-3">{{__('frontendshop.actions')}}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if($purchasemovies)
+                            <table class="table">
+                                <thead>
+                                    <tr class="border-bottom">
+                                        <th class="fw-bolder p-3">{{ __('frontendshop.order') }}</th>
+                                        <th class="fw-bolder p-3">{{ __('frontendshop.date') }}</th>
+                                        <th class="fw-bolder p-3">{{ __('frontendshop.status') }}</th>
+                                        <th class="fw-bolder p-3">{{ __('frontendshop.total') }}</th>
+                                        <th class="fw-bolder p-3">{{ __('frontendshop.actions') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if(!empty($purchasemovies) && $purchasemovies->count() > 0)
                                         @foreach($purchasemovies as $order)
-                                        <tr class="border-bottom">
-                                            <td class="text-primary fs-6"># {{$order->id}}</td>
-                                            <td>{{ $order->purchase_date }}</td>
-                                            <td>Success</td>
-                                            <td>100</td>
-                                            <td>
-                                                <div class="d-flex align-items-center gap-2">
-                                                    @include(
-                                                    'frontend::components.widgets.custom-button',
-                                                    [
-                                                    'buttonTitle' =>'Recipt',
-                                                    'buttonUrl' => 'javascript:void(0)',
-                                                    ]
-                                                    )
-
-                                                    <!-- @include(
-                                                    'frontend::components.widgets.custom-button',
-                                                    [
-                                                    'buttonTitle' =>__('frontendshop.view'),
-                                                    'buttonUrl' => 'javascript:void(0)',
-                                                    ]
-                                                    ) -->
-
-                                                    <!-- @include(
-                                                    'frontend::components.widgets.custom-button',
-                                                    [
-                                                    'buttonTitle' =>__('frontendshop.cancel'),
-                                                    'buttonUrl' => 'javascript:void(0)',
-                                                    ]
-                                                    ) -->
-
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            <tr class="border-bottom">
+                                                <td class="text-primary fs-6"># {{ $order->id }}</td>
+                                                <td>{{ $order->purchase_date }}</td>
+                                                <td>Success</td>
+                                                <td>100</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        @include('frontend::components.widgets.custom-button', [
+                                                            'buttonTitle' => 'Receipt',
+                                                            'buttonUrl' => 'javascript:void(0)',
+                                                        ])
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         @endforeach
-                                        @else
+                                    @else
                                         <tr class="border-bottom">
                                             <td colspan="5" class="text-center">No orders found</td>
                                         </tr>
+                                    @endif
+                                </tbody>
+                            </table>
 
-                                       
-                                        @endif
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                     </div>

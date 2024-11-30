@@ -11,7 +11,6 @@
                 <ul class="p-0 swiper-wrapper m-0  list-inline">
            
                     @foreach($continuewatches as $continuewatch)
-                        
                         @php
                             // Calculate progress as a percentage
                             $progress = $continuewatch->total_length > 0 
