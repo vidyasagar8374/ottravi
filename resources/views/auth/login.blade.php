@@ -60,11 +60,11 @@
                 <a class="text-primary ms-2" href="{{route('register')}}">Sign Up</a>
              </div>
              <div class="d-flex justify-content-center links">
-            @if (Route::has('password.request'))
+            <!-- @if (Route::has('password.request'))
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
-            @endif
+            @endif -->
         </div>
         </div>
 

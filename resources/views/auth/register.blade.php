@@ -20,7 +20,7 @@
                 <div class="mb-3">
                     <x-label for="mobile" :value="__('mobile')" />
 
-                    <x-input id="mobile" type="text" name="mobile" required placeholder="Enter your mobile number" />
+                    <x-input id="mobile" type="text" name="mobile" :value="old('mobile')" required placeholder="Enter your mobile number" />
 
                 </div>
                 </div>

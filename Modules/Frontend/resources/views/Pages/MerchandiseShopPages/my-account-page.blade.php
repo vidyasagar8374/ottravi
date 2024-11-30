@@ -71,13 +71,16 @@ __('frontendheader.my_account')])
                         <div class="myaccount-content text-body p-4">
                             <p>Hi {{$user->first_name}} 
                             </p>
-                            <p>{{__('frontendshop.your_account')}} <a
+                            <p>
+                              "Welcome to P19! Your ultimate destination for endless entertainment. Explore our vast library of movies, TV shows, and original content, and experience the best of online streaming, all in one place."
+                            </p>
+                            <!-- <p>{{__('frontendshop.your_account')}} <a
                                     href="javascript:void(0)">{{__('frontendshop.recent_orders')}}</a>,
                                 {{__('frontendshop.manage_your')}} <a
                                     href="javascript:void(0)">{{__('frontendshop.shipping_billing')}}</a>,
                                 {{__('frontendshop.and')}}<a href="javascript:void(0)">
                                     {{__('frontendshop.edit_password')}}</a>.
-                            </p>
+                            </p> -->
                         </div>
                     </div>
                     <div class="tab-pane fade" id="orders" role="tabpanel">
