@@ -224,68 +224,82 @@
 
     <!-- below movies recomended -->
 
-  <script>
-    
+    <script>
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize the Video.js player
     const videoElement = document.querySelector('#my-video'); // The video element ID
     const movieId = document.querySelector('#movie-id').value;
     const player = videojs(videoElement); // Create Video.js player instance
-    // Wait for the player to be ready
+
+    // Function to save playback details
+    function savePlaybackDetails() {
+        const currentTime = player.currentTime(); // Current playback time
+        const totalLength = player.duration(); // Total video duration
+
+        console.log(`Saving playback: Current time = ${currentTime}, Total length = ${totalLength}`);
+
+        $.ajax({
+            url: "{{ route('frontend.updateplaytrack') }}", // URL endpoint
+            type: 'POST', // HTTP method
+            dataType: 'json', // Expected response data type
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            },
+            data: {
+                movie_id: movieId, // Movie ID
+                current_time: currentTime, // Current playback time
+                total_length: totalLength, // Total video duration
+            },
+            success: function (response) {
+                console.log('Playback saved:', response);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error saving playback:', error);
+                console.error('Response:', xhr.responseText);
+            },
+        });
+    }
+
     player.ready(() => {
         console.log('Video.js player is ready.');
+
+        // Listen for control-related events
+        const events = ['play', 'pause', 'seeked', 'volumechange', 'ratechange', 'fullscreenchange'];
+
+        events.forEach(event => {
+            player.on(event, () => {
+                console.log(`User triggered event: ${event}`);
+                savePlaybackDetails();
+            });
+        });
 
         // Add event listener for metadata loaded
         player.on('loadedmetadata', () => {
             console.log('Metadata loaded. Duration:', player.duration());
         });
 
-        // Save playback details
-        function savePlaybackDetails() {
-            const currentTime = player.currentTime(); // Current playback time
-            const totalLength = player.duration(); // Total video duration
-
-            console.log(`Saving playback: Current time = ${currentTime}, Total length = ${totalLength}`);
-
-       
-
-            $.ajax({
-                url:  "{{ route('frontend.updateplaytrack') }}",// URL endpoint
-                type: 'POST', // HTTP method
-                dataType: 'json', // Expected response data type
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                },
-                data: {
-                    movie_id: movieId, // Movie ID
-                    current_time: currentTime, // Current playback time
-                    total_length: totalLength, // Total video duration
-                },
-                success: function (response) {
-                    console.log('Playback saved:', response);
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error saving playback:', error);
-                    console.error('Response:', xhr.responseText);
-                },
-            });
-            
-        }
+        // Save playback details every 10 minutes (600,000 milliseconds)
+        setInterval(savePlaybackDetails, 600000);
 
         // Trigger save on page unload
         window.addEventListener('beforeunload', () => {
             savePlaybackDetails();
         });
 
-        // Also save details when the page becomes hidden
+        // Trigger save when the page becomes hidden
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'hidden') {
                 savePlaybackDetails();
             }
         });
+
+        // Fallback for sudden shutdown or close
+        window.addEventListener('unload', () => {
+            savePlaybackDetails();
+        });
     });
 });
+</script>
 
-  </script>
         <!-- below movies recomended -->
 @endsection
