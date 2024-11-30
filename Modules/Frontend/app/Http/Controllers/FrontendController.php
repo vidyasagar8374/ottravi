@@ -70,17 +70,12 @@ public function updateplaytrack(Request $request)
       // Decrypt the movie ID
         // $movieId = Crypt::decrypt($request->movie_id);
         try {
-            
-            $movie = videoTracking::updateOrCreate(
-                [
-                    'movie_id' => $request->movie_id, 
-                    'user_id' => auth()->user()->id   
-                ],
-                [
-                    'paused_length' => $request->current_time,
-                    'total_length' => $request->total_length,
-                ]
-            );
+            videoTracking::where('movie_id', $request->movie_id)
+            ->where('user_id', auth()->user()->id)
+            ->update([
+                'paused_length' => $request->current_time,
+                'total_length' => $request->total_length,
+            ]);
                 UserPurchaseMovie::where('movie_id', $request->movie_id)
                 ->where('user_id', auth()->user()->id)
                 ->whereNull('after_expire')
