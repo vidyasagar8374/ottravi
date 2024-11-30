@@ -48,7 +48,7 @@
     </div>
 
 
-@include('frontend::components.partials.setting')
+<!-- @include('frontend::components.partials.setting') -->
     {{-- Vite JS --}}
     {{ module_vite('build-frontend', 'resources/assets/js/app.js') }}
 
