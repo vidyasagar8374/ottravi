@@ -34,7 +34,7 @@
                             $movieid = Crypt::encrypt($continuewatch->movie_id);
                          @endphp
                       
-                        $movieid = $continuewatch->moviedata->id;
+                      
                         <li class="swiper-slide">
                             
                                 @include('frontend::components.cards.continue-watch-card', [
