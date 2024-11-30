@@ -13,12 +13,10 @@
                     @foreach($continuewatches as $continuewatch)
                     @php
                             // Function to convert seconds to HH:MM:SS format
-                            function formatTime($seconds) {
-                            $hours = floor($seconds / 3600); // Calculate hours
-                            $minutes = floor(($seconds % 3600) / 60); // Calculate minutes
-                            $seconds = $seconds % 60; // Calculate remaining seconds
-
-                            // Return time in HH:MM:SS format
+                            function formatTimevideo($seconds) {
+                            $hours = floor($seconds / 3600); 
+                            $minutes = floor(($seconds % 3600) / 60); 
+                            $seconds = $seconds % 60; 
                             return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
                             }
 
@@ -28,8 +26,8 @@
                             : 0;
 
                             // Format paused_length and total_length as time
-                            $formattedPausedLength = formatTime($continuewatch->paused_length);
-                            $formattedTotalLength = formatTime($continuewatch->total_length);
+                            $formattedPausedLength = formatTimevideo($continuewatch->paused_length);
+                            $formattedTotalLength = formatTimevideo($continuewatch->total_length);
 
                             $movieid = Crypt::encrypt($continuewatch->movie_id);
                          @endphp
