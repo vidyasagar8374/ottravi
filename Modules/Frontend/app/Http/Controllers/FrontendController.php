@@ -304,7 +304,7 @@ public function store(Request $request)
                 $userpurchasedetails = $userpurchasedetailsQuery->first();
                 } else{
                     $userpurchasedetails = [];
-                    $ottdetails = [];
+                   
     
                 }
            

@@ -224,10 +224,6 @@
 
     <!-- below movies recomended -->
 
- 
-
-
- 
   <script>
     
 document.addEventListener('DOMContentLoaded', () => {
@@ -274,22 +270,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
             });
             
-            // Send data to the backend
-            // fetch(endpointroute.savePlayback, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content, // CSRF token
-            //     },
-            //     body: JSON.stringify({
-            //         movie_id: movieId,
-            //         current_time: currentTime,
-            //         total_length: totalLength,
-            //     }),
-            // })
-            //     .then(response => response.json())
-            //     .then(data => console.log('Playback saved:', data))
-            //     .catch(error => console.error('Error saving playback:', error));
         }
 
         // Trigger save on page unload
