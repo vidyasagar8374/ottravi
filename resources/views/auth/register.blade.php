@@ -79,14 +79,19 @@
                 3 Months with a 5 day free trial</label></div>
           <div class="form-check"><input type="radio" id="customRadio2" name="customRadio"
                 class="form-check-input"><label class="form-check-label" for="customRadio2"> Basic- $19 /
-                1 Month</label></div>
-          <div class="form-check"><input type="radio" id="customRadio3" name="customRadio"
+                1 Month</label></div> 
+           <div class="form-check">
+            <input type="radio" id="customRadio3" name="customRadio"
                 class="form-check-input"><label class="form-check-label"
-                for="customRadio3">Free-Free</label></div>
-                <x-button class="btn btn-btn btn-primary my-2">
+                for="customRadio3">Free-Free</label>
+            </div> --> 
+            <div class="text-center">
+            <x-button class="btn btn-btn btn-primary my-2 text-center">
                     {{ __('Sign Up') }}
                 </x-button>
-            </div> -->
+            </div>
+               
+            </div>
         </form>
         </div>
         </div>
