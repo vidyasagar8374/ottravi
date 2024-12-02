@@ -96,6 +96,7 @@
 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
+    // Pay Now button click event
     document.querySelector('.formbtn').addEventListener('click', function(e) {
         
         encrptmovieId = document.getElementById('movie_id').value;
