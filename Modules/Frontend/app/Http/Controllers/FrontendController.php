@@ -284,6 +284,7 @@ public function store(Request $request)
             // Initialize data variables
             $userpurchasedetails = [];
             $ottdetails = [];
+            // added new changes
             // dd(auth()->id());
             if ($movie) {
                 // Get OTT details for the movie
