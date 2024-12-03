@@ -35,12 +35,17 @@ class FrontendController extends Controller
         
         if(auth()->user()){
             $continuewatches = videoTracking::with('moviedata')
-            ->join('user_purchase_movies', 'user_purchase_movies.movie_id', '=', 'video_trackings.movie_id') // Correct the table name
-            ->where('user_purchase_movies.user_id', auth()->user()->id)
-            ->where('user_purchase_movies.is_watched', 0)
-            ->where('user_purchase_movies.is_active', 1)
-            ->get();   
-           
+                    ->join(
+                        'user_purchase_movies',
+                        function ($join) {
+                            $join->on('user_purchase_movies.movie_id', '=', 'video_trackings.movie_id')
+                                 ->on('user_purchase_movies.user_id', '=', 'video_trackings.user_id');
+                        }
+                    )
+                    ->where('user_purchase_movies.user_id', auth()->id())
+                    ->where('user_purchase_movies.is_watched', 0)
+                    ->where('user_purchase_movies.is_active', 1)
+                    ->get();  
         }else{
             $continuewatches = [];
         }
