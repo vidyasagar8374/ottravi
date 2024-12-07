@@ -2,9 +2,9 @@
 
 @section('content')
     <x-auth-card>
-        <div class="container">
+        <!-- <div class="container">
            <a href="{{ route('frontend.index') }}"> <img src="{{ asset('dashboard/images/') }}" alt=""></a>
-        </div>
+        </div> -->
 
         <div class="my-4">
             {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
