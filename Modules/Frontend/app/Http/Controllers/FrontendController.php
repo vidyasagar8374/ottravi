@@ -17,6 +17,9 @@ use App\Models\Payment;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Log;
 
 
@@ -647,5 +650,18 @@ public function store(Request $request)
     public function order_tracking()
     {
         return view('frontend::Pages.MerchandiseShopPages.order-tracking');
+    }
+    public function reset_password(Request $request){
+        $request->validate([
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+        // update password where mail = $request->email
+        $udpatepassword = User::where('email', $request->email)->update([
+            'password' => Hash::make($request->password)
+        ]);
+        if($udpatepassword){
+            return redirect()->route('login')->with('status', 'password-updated');
+        }
+
     }
 }

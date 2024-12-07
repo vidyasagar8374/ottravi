@@ -101,6 +101,7 @@ Route::group([], function () {
     Route::get('/wishlist', [FrontendController::class, 'wishlist'])->name('frontend.wishlist');
     Route::get('/chekout', [FrontendController::class, 'chekout'])->name('frontend.chekout');
     Route::get('/order-tracking', [FrontendController::class, 'order_tracking'])->name('frontend.order_tracking');
+    Route::post('/reset-password', [FrontendController::class, 'reset_password'])->name('reset-password.update');
 
 
 });
