@@ -4,6 +4,9 @@
     data-swiper="home-banner-slider">
     <div class="slider m-0 p-0 swiper-wrapper home-slider">
         @foreach($banners as $banner)
+        @php
+        $movieId =  Crypt::encrypt($banner->movie_id);
+        @endphp
         <div class="swiper-slide slide s-bg-1 p-0">
             <div class="banner-home-swiper-image">
                 <img src="{{ asset($banner->banner_image) }}" alt="banner-home-swiper-image"
@@ -94,7 +97,7 @@
 
                             <div class="RightAnimate-four">
                                 @include('frontend::components.cards.custom-button', [
-                                'buttonUrl' => route('frontend.movie_detail',['id' => $movieIds ?? '']),
+                                'buttonUrl' => route('frontend.movie_detail',['id' => $movieId ?? '']),
                                 'buttonTitle' => __('otthome.play_now'),
                                 ])
                             </div>
