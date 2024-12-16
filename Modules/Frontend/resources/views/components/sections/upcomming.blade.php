@@ -5,8 +5,8 @@
         <section class="overflow-hidden">
             <div class="d-flex align-items-center justify-content-between px-3 my-4">
                 <h5 class="main-title text-capitalize mb-0">{{ $category->name }}</h5>
-                <a href="{{ route('frontend.view_all') }}"
-                    class="text-primary iq-view-all text-decoration-none flex-none">{{__('otthome.view_all')}}</a>
+                <!-- <a href="{{ route('frontend.view_all') }}"
+                    class="text-primary iq-view-all text-decoration-none flex-none">{{__('otthome.view_all')}}</a> -->
             </div>
             <div class="card-style-slider">
                 <div class="position-relative swiper swiper-card" data-slide="6" data-laptop="6" data-tab="3"

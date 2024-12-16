@@ -384,7 +384,7 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav align-items-center ms-auto mb-2 mb-xl-0">
-                            <li class="nav-item dropdown iq-responsive-menu">
+                            <!-- <li class="nav-item dropdown iq-responsive-menu">
                                 <div class="search-box">
                                     <a href="#" class="nav-link p-0" id="search-drop" data-bs-toggle="dropdown">
                                         <div class="btn-icon btn-sm rounded-pill btn-action">
@@ -410,7 +410,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                            </li>
+                            </li> -->
                             @if (auth()->user())
                             <!-- dropdown method -->
                             <li class="nav-item dropdown" id="itemdropdown1">

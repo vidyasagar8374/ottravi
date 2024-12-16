@@ -1,6 +1,4 @@
 @extends('frontend::layouts.master', ['isSwiperSlider' => true, 'isVideoJs' => true, 'bodyClass' => 'custom-header-relative', 'isSelect2' => true])
-
-
 @section('content')
     <div class="iq-main-slider site-video">
         <div class="container-fluid">
@@ -26,28 +24,27 @@
             </div>
         </div>
     </div>
-
     <div class="movie-purchase-btns pt-5">
-    <div class="container ms-5">
-    <div class="row justify-content-start">
+    <div class="container">
+    <div class="d-flex gap-1">
         @if($userpurchasedetails)
         @else
         @if($movie->getticket)
-        <div class="col-auto">
+        <div class="movie-data-buttons">
         <a href="{{ url('/initiate-payment/' . Crypt::encrypt($movie->id)) }}">
-                <button id="rzp-button" type="button" class="btn  btn-success text-white">Get Tickets</button>
+                <button id="rzp-button" type="button" class="btn  btn-success btn-sm text-white">Get Tickets</button>
             </a>         
         </div>
         @endif 
         @endif
         @if($movie->officalsite)
-        <div class="col-auto">
-           <a href="{{ $movie->officalsite }}" target="_blank"><button type="button" class="btn btn-info text-white">Official Site</button></a> 
+        <div class="movie-data-buttons">
+           <a href="{{ $movie->officalsite }}" target="_blank"><button type="button" class="btn btn-info btn-sm text-white">Official Site</button></a> 
         </div>
         @endif
         @if($movie->ott)
-        <div class="col-auto">
-          <button type="button" class="btn  btn-warning text-white" data-bs-toggle="modal" data-bs-target="#exampleModalLong">On OTT's</button>
+        <div class="movie-data-buttons">
+          <button type="button" class="btn  btn-warning btn-sm text-white" data-bs-toggle="modal" data-bs-target="#exampleModalLong">On OTT's</button>
         </div>
         @endif
     </div>
