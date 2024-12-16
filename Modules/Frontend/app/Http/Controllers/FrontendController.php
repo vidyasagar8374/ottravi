@@ -345,18 +345,61 @@ public function store(Request $request)
     {
          // dd($request->id);
          $movieId = $request->id;
+         $id = Crypt::decrypt($movieId);
+         $movie = Movie::findOrFail($id);
          try {
+          
+            $ottdetails = '';
+            if($movie){
+                $ottdetails = Movie::with('ottdetails.ott')->where('id',$id)->get();
+                //  dd($ottdetails);
+            }
+            $userpurchasedetails = UserPurchaseMovie::get();
+           
+            if (auth()->check()) {
+                $userpurchasedetails = videoTracking::with('moviedata')
+                ->join(
+                    'user_purchase_movies',
+                    function ($join) {
+                        $join->on('user_purchase_movies.movie_id', '=', 'video_trackings.movie_id')
+                             ->on('user_purchase_movies.user_id', '=', 'video_trackings.user_id');
+                    }
+                )
+                ->where('user_purchase_movies.movie_id', $id)
+                ->where('user_purchase_movies.user_id', auth()->id())
+                ->where('user_purchase_movies.is_watched', 0)
+                ->where('user_purchase_movies.is_active', 1)
+                ->where(function ($query) {
+                    $query->where(function ($subQuery) {
+                        // If `after_expire` is NULL, compare `expire_date`
+                        $subQuery->whereNull('user_purchase_movies.after_expire')
+                                 ->where('user_purchase_movies.expire_date', '>=', Carbon::now());
+                    })
+                    ->orWhere(function ($subQuery) {
+                        // If `after_expire` is NOT NULL, compare `after_expire`
+                        $subQuery->whereNotNull('user_purchase_movies.after_expire')
+                                 ->where('user_purchase_movies.after_expire', '>=', Carbon::now());
+                    });
+                })
+                ->first();
+             // Fetch only the first record (use `get()` for multiple records)
+            }
+
+
+            if($userpurchasedetails){
+                return view(
+                    'frontend::Pages.Movies.detail-page',
+                    compact('movie', 'userpurchasedetails', 'ottdetails')
+                );
+            }else{
+                return view('frontend::Pages.Movies.initiate-payment',compact('movie','userpurchasedetails','ottdetails'));
+            }
              // Decrypt the ID
-             $id = Crypt::decrypt($movieId);
-             $movie = Movie::findOrFail($id);
-             $ottdetails = '';
-             if($movie){
-                 $ottdetails = Movie::with('ottdetails.ott')->where('id',$id)->get();
-                 //  dd($ottdetails);
-             }
-             $userpurchasedetails = UserPurchaseMovie::get();
+            
+          
+
              
-             return view('frontend::Pages.Movies.initiate-payment',compact('movie','userpurchasedetails','ottdetails'));
+             
          } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
              // Handle the case where decryption fails (invalid or tampered data)
              abort(404, 'Invalid movie ID');
