@@ -48,6 +48,18 @@ class FrontendController extends Controller
                     ->where('user_purchase_movies.user_id', auth()->id())
                     ->where('user_purchase_movies.is_watched', 0)
                     ->where('user_purchase_movies.is_active', 1)
+                    ->where(function ($query) {
+                        $query->where(function ($subQuery) {
+                            // If `after_expire` is NULL, compare `expire_date`
+                            $subQuery->whereNull('user_purchase_movies.after_expire')
+                                     ->where('user_purchase_movies.expire_date', '>=', Carbon::now());
+                        })
+                        ->orWhere(function ($subQuery) {
+                            // If `after_expire` is NOT NULL, compare `after_expire`
+                            $subQuery->whereNotNull('user_purchase_movies.after_expire')
+                                     ->where('user_purchase_movies.after_expire', '>=', Carbon::now());
+                        });
+                    })
                     ->get();  
         }else{
             $continuewatches = [];
