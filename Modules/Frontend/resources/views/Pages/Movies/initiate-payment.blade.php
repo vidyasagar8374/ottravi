@@ -22,6 +22,13 @@
     .content-wrapper-payment {
         margin-left: 140px !important; /* Adjust this value for more or less space */
     }
+    /* remove spce in mobile deives  */
+ 
+            @media (max-width: 767px) {
+            .content-wrapper-payment {
+                margin-left: 0 !important;
+            }
+        }
 
     .table {
         margin-bottom: 20px; /* Add space between table and form */
