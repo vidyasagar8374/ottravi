@@ -60,6 +60,7 @@
                             <p class="text-muted">Entertine world</p>
                         </div>
                         <div class="content-wrapper-payment">
+                        <div class="table-responsive">
                             <table class="table table-borderless">
                                 <tbody>
                                     <tr>
@@ -80,7 +81,7 @@
                                 </tbody>
                                         
                             </table>
-                           
+                         </div>  
 
                         </div>
                         <div class="details-form-btn">
