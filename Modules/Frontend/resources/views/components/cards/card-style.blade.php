@@ -16,7 +16,7 @@
             <div class="cart-content">
                 <div class="content-left">
                     <h5 class="iq-title text-capitalize">
-                        <a href="/movie-detail/{{ $movieId ?? '' }}">{{ $cardTitle }}</a>
+                        <a href="{{ url('/movie-detail/' . ($movieId ?? '')) }}">{{ $cardTitle }}</a>
                     </h5>
                     <!-- <div class="movie-time d-flex align-items-center my-2">
                         <span class="movie-time-text font-normal">{{ $movieTime }}</span>
