@@ -1,13 +1,13 @@
 
 <div class="iq-card card-hover">
     <div class="block-images position-relative w-100">
-        <div class="video-and-image-block">
+        <div class="video-and-image-block" data-movie-id="{{ $movieId }}">
             <div class="img-box w-100">
                 <a href="{{ url('/movie-detail/' . ($movieId ?? '')) }}" class="">
                 <img src="{{ $cardImage }}" alt="movie-card" class="img-fluid object-cover w-100 border-0" loading="lazy" />
             </div>
             <div class="video-box w-100" style="display: none;">
-                <video src=""  id="my-video" class="video-js vjs-big-play-centered w-100" controls muted></video>
+                <video src=""  id="my-video" class="video-js vjs-big-play-centered w-100"  muted></video>
             </div>
             </a>
             

@@ -29,27 +29,27 @@
             <!-- Email Address -->
             <div class="mb-3">
 
-                <x-input id="email" type="email" name="email" :value="old('email', 'admin@demo.com')" required autofocus placeholder="{{ __('Enter email') }}" />
+                <x-input id="email" type="email" name="email" :value="old('email')" required autofocus placeholder="{{ __('Enter email') }}" />
 
             </div>
 
             <!-- Password -->
             <div class="mb-3">
 
-                <x-input id="password"  type="password"  name="password"  required  autocomplete="current-password"  for="password" value="12345678" placeholder="password"/>
+                <x-input id="password"  type="password"  name="password"  required  autocomplete="current-password"  for="password" value="" placeholder="password"/>
 
             </div>
-            <div class="d-flex justify-content-between align-items-cente sign-info">
+            <div class="d-flex justify-content-center align-items-center sign-info">
 
             <x-button>
                 {{ __('Sign in') }}
             </x-button>
 
             <!-- Remember Me -->
-            <div class="custom-control custom-checkbox d-inline-block"><input id="remember_me" type="checkbox" class="form-check-input" name="remember">
+            <!-- <div class="custom-control custom-checkbox d-inline-block"><input id="remember_me" type="checkbox" class="form-check-input" name="remember">
                 <label class="form-check-label"
                 for="customCheck"><span class="ms-2">{{ __('Remember me') }}</span></label></div>
-            </div>
+            </div> -->
 
         </form>
         </div>

@@ -21,13 +21,13 @@
                             <button type="button" class="btn-close float-end px-3" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
                         <ul class="navbar-nav iq-nav-menu list-unstyled" id="header-menu">
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                                         <a class="nav-link " href="{{ url('/') }}">
                                            
 
                                             <span class="d-inline-block">{{__('frontendheader.home')}}</span>
                                         </a>
-                                    </li>
+                                    </li> -->
                             <li class="nav-item">
 
                                 <!-- <a class="nav-link" data-bs-toggle="collapse" href="{{ url('/') }}" role="button" aria-expanded="false" aria-controls="homePages">

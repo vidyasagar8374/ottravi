@@ -55,19 +55,40 @@
 </div>
 
 <script>
- 
- $('.video-and-image-block').hover(
+let hoverTimeout; // Variable to store the timeout ID
+const getVideoDetailsUrl = "{{ route('get.video') }}";
+$('.video-and-image-block').hover(
     function () {
         const videoBoxhover = $(this).find('.video-box'); 
         const videoBox = $(this).find('.video-box video'); 
-        const videoSrc = "{{ asset('trailer/10665530-uhd_4096_2160_25fps.mp4') }}";
-        videoBoxhover.css('display', 'block'); 
-        if (videoBox.length) {
-            videoBox.attr('src', videoSrc); 
-            videoBox[0].play(); // Play video
-        }
+        const movieId = $(this).data('movie-id'); // Get the data-movie-id attribute value
+        
+        // Start a timeout for 2 seconds
+        hoverTimeout = setTimeout(() => {
+            videoBoxhover.css('display', 'block'); 
+
+            if (videoBox.length) {
+                // Make an AJAX call to fetch the video URL
+                $.ajax({
+                    url: getVideoDetailsUrl, // Generates the correct URL for the named route
+                    method: 'GET',
+                    data: { movieId: movieId },
+                    success: function (response) {
+                        const videoSrc = response.videoUrl; // Assuming server returns videoUrl in JSON
+                        videoBox.attr('src', videoSrc); 
+                        videoBox[0].play(); // Play video
+                    },
+                    error: function () {
+                        console.error('Failed to fetch video URL');
+                    }
+                });
+            }
+        }, 1000); // 2-second delay
     },
     function () {
+        // Clear the timeout if the mouse leaves before 2 seconds
+        clearTimeout(hoverTimeout);
+
         const videoBoxhover = $(this).find('.video-box'); 
         const videoBox = $(this).find('.video-box video'); 
         if (videoBox.length) {
@@ -78,6 +99,36 @@
     }
 );
 
+
+
+
+
+    // backup
+//  $('.video-and-image-block').hover(
+//     // dealy with 3 seconds
+//     function () {
+//         const videoBoxhover = $(this).find('.video-box'); 
+//         const videoBox = $(this).find('.video-box video'); 
+//         const videoSrc = "{{ asset('trailer/10665530-uhd_4096_2160_25fps.mp4') }}";
+//         videoBoxhover.css('display', 'block'); 
+//         if (videoBox.length) {
+//             videoBox.attr('src', videoSrc); 
+//             videoBox[0].play(); // Play video
+//         }
+//     },
+//     function () {
+//         const videoBoxhover = $(this).find('.video-box'); 
+//         const videoBox = $(this).find('.video-box video'); 
+//         if (videoBox.length) {
+//             videoBox[0].pause(); 
+//             videoBox.attr('src', ''); 
+//         }
+//         videoBoxhover.css('display', 'none');
+//     }
+// );
+
+
+// new
 
 
 
@@ -97,7 +148,7 @@
 
 //             hoverTimeout = setTimeout(function () {
 //                 activeRequest = $.ajax({
-//                     url: "{{ route('get.video.details') }}",
+//                     url: "{{ route('get.video') }}",
 //                     type: 'GET',
 //                     data: { movieId: movieId },
 //                     success: function (response) {

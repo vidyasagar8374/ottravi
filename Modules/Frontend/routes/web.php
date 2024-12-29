@@ -20,7 +20,7 @@ Route::group([], function () {
     Route::get('/home', [FrontendController::class, 'ott'])->name('frontend.ott');
     Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
     Route::get('/movie', [FrontendController::class, 'movie'])->name('frontend.movie');
-    Route::get('/get-video-details', [FrontendController::class, 'getVideoDetails'])->name('get.video.details');
+    Route::get('/get-video-details', [FrontendController::class, 'getVideoDetails'])->name('get.video');
     Route::get('/tv-show', [FrontendController::class, 'tv_show'])->name('frontend.tv-show');
     Route::get('/video', [FrontendController::class, 'video'])->name('frontend.video');
     Route::get('/merchandise', [FrontendController::class, 'merchandise'])->name('frontend.merchandise');

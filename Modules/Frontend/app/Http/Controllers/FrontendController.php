@@ -70,9 +70,7 @@ class FrontendController extends Controller
         
         
     }
-    public function getVideoDetails(Request $request)
-{
-
+    public function getVideoDetails(Request $request){
     $movieId = Crypt::decrypt($request->movieId);
     //  dd($movieId);
     $movie = Movie::find($movieId);

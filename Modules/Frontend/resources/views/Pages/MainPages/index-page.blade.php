@@ -7,7 +7,7 @@
         @php
         $movieId =  Crypt::encrypt($banner->movie_id);
         @endphp
-        <div class="swiper-slide slide s-bg-1 p-0">
+        <div class="swiper-slide slide s-bg-1 p-0" data-autoplay="true" data-loop="true">
             <div class="banner-home-swiper-image">
                 <img src="{{ asset($banner->banner_image) }}" alt="banner-home-swiper-image"
                     loading="lazy" />
@@ -221,7 +221,7 @@ document.getElementById('videoModal').addEventListener('show.bs.modal', function
 
 //             hoverTimeout = setTimeout(function () {
 //                 activeRequest = $.ajax({
-//                     url: "{{ route('get.video.details') }}",
+//                     url: "{{ route('get.video') }}",
 //                     type: 'GET',
 //                     data: { movieId: movieId },
 //                     success: function (response) {
@@ -259,6 +259,19 @@ document.getElementById('videoModal').addEventListener('show.bs.modal', function
 // });
 
 
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const homeBannerSlider = new Swiper('.banner-home-swiper', {
+            loop: true,
+            autoplay: {
+                delay: 3000, // 3 seconds
+                disableOnInteraction: false,
+            },
+           
+           
+        });
+    });
 </script>
 
 @endsection
