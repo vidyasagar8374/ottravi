@@ -685,6 +685,63 @@ public function store(Request $request)
         return view('frontend::Pages.MerchandiseShopPages.my-account-page',compact('user','purchasemovies'));
     }
 
+    public function update_my_account(Request $request)
+    {
+        // Get the currently authenticated user
+        $user = auth()->user();
+
+        try{
+              // Validate the incoming request data
+            //    dd($request->all());
+            $validatedData = $request->validate([
+                'first-name' => 'sometimes|string|max:255', // Validate if present
+                'last-name' => 'sometimes|string|max:255', // Validate if present
+                'current_password' => 'required_with:password|string|min:8', // Required only if password is provided
+                'password' => ['nullable', 'confirmed', Rules\Password::defaults()], // Validate new password if provided
+                'profile' => 'nullable|image|max:2048', // Validate profile image if provided
+            ]);
+            
+
+               // Update first and last name if provided
+            if ($request->filled('first-name')) {
+                $user->first_name = $validatedData['first-name'];
+            }
+
+            if ($request->filled('last-name')) {
+                $user->last_name = $validatedData['last-name'];
+            }
+    
+        // Update password if provided
+           // Handle password update
+            if ($request->filled('password')) {
+                // Validate current password
+                if (!Hash::check($request->input('current_password'), $user->password)) {
+                    return redirect()->back()->with(['error' => 'The current password is incorrect.']);
+                }
+
+                // Update to the new password
+                $user->password = Hash::make($request->input('password'));
+            }
+    
+        // Handle profile image upload
+      
+        if ($request->hasFile('profile')) {
+            $image = $request->file('profile');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('profile_images'), $imageName);
+            $user->profile_img = 'profile_images/' . $imageName;
+        }
+        // Save the updated user details
+        $user->save();
+    
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'Your account has been updated successfully.');
+        }catch(\Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+      
+    }
+    
     public function cart()
     {
         return view('frontend::Pages.MerchandiseShopPages.cart-page');

@@ -39,6 +39,8 @@ __('frontendheader.my_account')])
                                         class="fas fa-user"></i><span
                                         class="ms-2">{{__('frontendshop.account_details')}}</span></button>
                             </li>
+                            
+
                             <!-- <li class="py-3 nav-item">
                                 <a href="{{ route('frontend.play_list') }}">
                                 <button class="nav-link p-0 bg-transparent" data-bs-toggle="tab"
@@ -69,6 +71,15 @@ __('frontendheader.my_account')])
                 <div class="tab-content" id="product-menu-content">
                     <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
                         <div class="myaccount-content text-body p-4">
+                        @if (session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                                @elseif (session('error'))
+                                <div class="alert alert-danger">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
                             <p>Hi {{$user->first_name}} 
                             </p>
                             <p>
@@ -436,7 +447,10 @@ __('frontendheader.my_account')])
                     </div>
                     <div class="tab-pane fade" id="account-details" role="tabpanel">
                         <div class=" p-4 text-body">
-                            <form>
+                 
+
+                            <form action="{{ route('frontend.update_my_account') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
                                 <div class="form-group mb-5">
                                     <label class="mb-2">{{__('frontendshop.first_name')}}&nbsp; <span
                                             class="text-danger">*</span></label>
@@ -460,12 +474,12 @@ __('frontendheader.my_account')])
                                     <label class="mb-2">{{__('frontendshop.email_address')}}&nbsp; <span
                                             class="text-danger">*</span></label>
                                     <input type="email" name="email" value="{{ $user->email }}" class="form-control"
-                                        required="required">
+                                       disabled>
                                 </div>
                                 <h4 class="fw-normal mb-5">{{__('frontendshop.password_change')}}</h4>
                                 <div class="form-group mb-5">
                                     <label class="mb-2">{{__('frontendshop.current_password')}}</label>
-                                    <input type="password" name="password" class="form-control">
+                                    <input type="password" name="current_password" class="form-control" value="">
                                 </div>
                                 <div class="form-group mb-5">
                                     <label class="mb-2">{{__('frontendshop.new_password')}}</label>
@@ -473,16 +487,27 @@ __('frontendheader.my_account')])
                                 </div>
                                 <div class="form-group mb-5">
                                     <label class="mb-2">{{__('frontendshop.comfirm_password')}}</label>
-                                    <input type="password" name="password" class="form-control">
+                                    <input type="password" name="password_confirmation" class="form-control">
                                 </div>
+                                <!-- profile save -->
+                                 <div class="form-group mb-5">
+                                    <label class="mb-2">Profile Image</label>
+                                    <input type="file" name="profile" class="form-control">
+                                </div>
+                                <!-- show image -->
+                                 @if(!empty($user->profile_img))
+                                <div class="form-group mb-5">
+                                    <label class="mb-2">Profile Image</label>
+                                    <img src="{{asset($user->profile_img)}}" alt="" width="100px" height="100px">
+                                </div>
+                                @endif
                                 <div class="form-group">
-                                    @include('frontend::components.widgets.custom-button', [
-                                    'buttonTitle' => __('frontendshop.save_changes'),
-                                    'buttonUrl' => 'javascript:void(0)',
-                                    ])
-
+                                    <button type="submit" class="btn btn-primary">
+                                        {{__('frontendshop.save_changes')}}
+                                    </button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                     <div class="tab-pane fade" id="logout" role="tabpanel">

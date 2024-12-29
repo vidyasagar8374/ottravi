@@ -97,6 +97,7 @@ Route::group([], function () {
     Route::get('/shop', [FrontendController::class, 'shop'])->name('frontend.shop');
     Route::get('/all-products', [FrontendController::class, 'all_products'])->name('frontend.all-products');
     Route::get('/my-account', [FrontendController::class, 'my_account'])->name('frontend.my_account');
+    Route::post('/update_my_account', [FrontendController::class, 'update_my_account'])->name('frontend.update_my_account');
     Route::get('/cart', [FrontendController::class, 'cart'])->name('frontend.cart');
     Route::get('/wishlist', [FrontendController::class, 'wishlist'])->name('frontend.wishlist');
     Route::get('/chekout', [FrontendController::class, 'chekout'])->name('frontend.chekout');
