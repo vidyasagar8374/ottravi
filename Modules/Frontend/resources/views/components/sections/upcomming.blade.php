@@ -55,49 +55,62 @@
 </div>
 
 <script>
-let hoverTimeout; // Variable to store the timeout ID
-const getVideoDetailsUrl = "{{ route('get.video') }}";
-$('.video-and-image-block').hover(
-    function () {
-        const videoBoxhover = $(this).find('.video-box'); 
-        const videoBox = $(this).find('.video-box video'); 
-        const movieId = $(this).data('movie-id'); // Get the data-movie-id attribute value
-        
-        // Start a timeout for 2 seconds
-        hoverTimeout = setTimeout(() => {
-            videoBoxhover.css('display', 'block'); 
+$(document).ready(function () {
+    let hoverTimeout; // Variable to store the timeout ID
+    const getVideoDetailsUrl = "{{ route('get.video') }}";
 
-            if (videoBox.length) {
-                // Make an AJAX call to fetch the video URL
-                $.ajax({
-                    url: getVideoDetailsUrl, // Generates the correct URL for the named route
-                    method: 'GET',
-                    data: { movieId: movieId },
-                    success: function (response) {
-                        const videoSrc = response.videoUrl; // Assuming server returns videoUrl in JSON
-                        videoBox.attr('src', videoSrc); 
-                        videoBox[0].play(); // Play video
-                    },
-                    error: function () {
-                        console.error('Failed to fetch video URL');
-                    }
-                });
+    $('.video-and-image-block').hover(
+        function () {
+            const videoBoxhover = $(this).find('.video-box'); 
+            const videoBox = $(this).find('.video-box video'); 
+            const movieId = $(this).data('movie-id'); // Get the data-movie-id attribute value
+
+            if (!movieId) {
+                console.error('Movie ID is missing for this element.');
+                return;
             }
-        }, 1000); // 2-second delay
-    },
-    function () {
-        // Clear the timeout if the mouse leaves before 2 seconds
-        clearTimeout(hoverTimeout);
 
-        const videoBoxhover = $(this).find('.video-box'); 
-        const videoBox = $(this).find('.video-box video'); 
-        if (videoBox.length) {
-            videoBox[0].pause(); 
-            videoBox.attr('src', ''); 
+            // Start a timeout for 2 seconds
+            hoverTimeout = setTimeout(() => {
+                videoBoxhover.css('display', 'block'); 
+
+                if (videoBox.length) {
+                    // Make an AJAX call to fetch the video URL
+                    $.ajax({
+                        url: getVideoDetailsUrl, // Generates the correct URL for the named route
+                        method: 'GET',
+                        data: { movieId: movieId },
+                        success: function (response) {
+                            if (response && response.videoUrl) {
+                                const videoSrc = response.videoUrl; // Assuming server returns videoUrl in JSON
+                                videoBox.attr('src', videoSrc); 
+                                videoBox[0].play(); // Play video
+                            } else {
+                                console.error('Invalid response from server:', response);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Failed to fetch video URL:', status, error);
+                        }
+                    });
+                }
+            }, 2000); // 2-second delay
+        },
+        function () {
+            // Clear the timeout if the mouse leaves before 2 seconds
+            clearTimeout(hoverTimeout);
+
+            const videoBoxhover = $(this).find('.video-box'); 
+            const videoBox = $(this).find('.video-box video'); 
+            if (videoBox.length) {
+                videoBox[0].pause(); 
+                videoBox.attr('src', ''); 
+            }
+            videoBoxhover.css('display', 'none');
         }
-        videoBoxhover.css('display', 'none');
-    }
-);
+    );
+});
+
 
 
 

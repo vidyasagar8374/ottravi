@@ -10,7 +10,6 @@
                 <video src=""  id="my-video" class="video-js vjs-big-play-centered w-100"  muted></video>
             </div>
             </a>
-            
         </div>
         <div class="card-description with-transition">
             <div class="cart-content">
