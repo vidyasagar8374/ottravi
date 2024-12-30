@@ -432,7 +432,7 @@
                                 @php
                                         $profilepath = auth()->user() && !empty(auth()->user()->profile_img) 
                                             ? asset(auth()->user()->profile_img) 
-                                            : asset('/frontend/images/user/user-ott.jpg');
+                                            : asset('/frontend/images/user/user-ott.png');
                                     @endphp
                                     <li class="user-info d-flex align-items-center gap-3 mb-3">
                                         <img src="{{ $profilepath }}" class="img-fluid" alt="" loading="lazy" />
