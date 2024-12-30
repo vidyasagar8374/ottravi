@@ -61,29 +61,24 @@ $(document).ready(function () {
 
     $('.video-and-image-block').hover(
         function () {
-            const videoBoxhover = $(this).find('.video-box'); 
-            const videoBox = $(this).find('.video-box video'); 
+            const videoBoxhover = $(this).find('.video-box');
+            const videoBox = $(this).find('.video-box video');
             const movieId = $(this).data('movie-id'); // Get the data-movie-id attribute value
-
-            if (!movieId) {
-                console.error('Movie ID is missing for this element.');
-                return;
-            }
-
             // Start a timeout for 2 seconds
+            videoBoxhover.css('display', 'block');
             hoverTimeout = setTimeout(() => {
-                videoBoxhover.css('display', 'block'); 
+              
 
                 if (videoBox.length) {
                     // Make an AJAX call to fetch the video URL
                     $.ajax({
-                        url: getVideoDetailsUrl, // Generates the correct URL for the named route
+                        url: getVideoDetailsUrl,
                         method: 'GET',
                         data: { movieId: movieId },
                         success: function (response) {
                             if (response && response.videoUrl) {
                                 const videoSrc = response.videoUrl; // Assuming server returns videoUrl in JSON
-                                videoBox.attr('src', videoSrc); 
+                                videoBox.attr('src', videoSrc);
                                 videoBox[0].play(); // Play video
                             } else {
                                 console.error('Invalid response from server:', response);
@@ -99,17 +94,17 @@ $(document).ready(function () {
         function () {
             // Clear the timeout if the mouse leaves before 2 seconds
             clearTimeout(hoverTimeout);
-
-            const videoBoxhover = $(this).find('.video-box'); 
-            const videoBox = $(this).find('.video-box video'); 
+            const videoBoxhover = $(this).find('.video-box');
+            const videoBox = $(this).find('.video-box video');
             if (videoBox.length) {
-                videoBox[0].pause(); 
+                videoBox[0].pause();
                 videoBox.attr('src', ''); 
             }
             videoBoxhover.css('display', 'none');
         }
     );
 });
+
 
 
 
