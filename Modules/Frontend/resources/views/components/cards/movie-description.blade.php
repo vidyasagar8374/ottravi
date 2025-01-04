@@ -102,8 +102,8 @@
             </ul>
             
         </div>
-        <div class="trailor-video col-md-3 col-12 mt-lg-0 mt-4 mb-md-0 mb-1 text-lg-right">
-            <a data-fslightbox="html5-video" href="https://www.youtube.com/watch?v=QCGq1epI9pQ" target="_blank"
+        <div class="trailor-video col-md-3 col-12 mt-lg-0 mt-4 mb-md-0 mb-1 text-lg-right" data-bs-toggle="modal" data-bs-target="#videotrailer" data-url="{{ $youtubetrailer ?? '' }}">
+            <a 
                 class="video-open playbtn block-images position-relative playbtn_thumbnail">
                 <img src="{{ asset( $bgImageurl ?? '') }} "
                     class="attachment-medium-large size-medium-large wp-post-image" alt="" loading="lazy" />

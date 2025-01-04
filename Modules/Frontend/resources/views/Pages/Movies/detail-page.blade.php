@@ -92,7 +92,8 @@
                         'movieDuration' => '1hr : 48mins',
                         'movieReleased' => 'Feb 2017',
                         'trailerLink' => $movie->triallerurl,
-                        'bgImageurl' => $movie->bgsm_image
+                        'bgImageurl' => $movie->bgsm_image,
+                        'youtubetrailer' => $movie->youtubetrailer,
                     ])
 
                     @include('frontend::components.cards.movie-source')
@@ -221,6 +222,26 @@
 
     <!-- below movies recomended -->
 
+
+
+    <section>
+<div class="modal fade" id="videotrailer" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="videoModalLabel">Trailer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="ratio ratio-16x9">
+                    <iframe width="560" height="315"  id="youtubeVideo"  src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
     <script>
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize the Video.js player
@@ -295,6 +316,36 @@ document.addEventListener('DOMContentLoaded', () => {
             savePlaybackDetails();
         });
     });
+});
+
+
+
+// trailer model 
+document.getElementById('videotrailer').addEventListener('show.bs.modal', function (event) {
+    // Get the button that triggered the modal
+    const button = event.relatedTarget;
+    
+    // Extract video URL from data-url attribute
+    const youtubeID = button.getAttribute('data-url');
+    const youtubeURL = 'https://www.youtube.com/embed/' + youtubeID;
+    
+    // Set the iframe src to the video URL
+    document.getElementById('youtubeVideo').src = youtubeURL;
+
+    // Stop the carousel (pause Swiper autoplay)
+    if (window.homeBannerSlider && homeBannerSlider.autoplay) {
+        console.log("Stopping Swiper autoplay"); // Debugging
+        homeBannerSlider.autoplay.stop();
+    } else {
+        console.warn("Swiper instance not found or autoplay is not enabled");
+    }
+});
+
+document.getElementById('videotrailer').addEventListener('hide.bs.modal', function () {
+    // Clear the video URL from iframe
+    document.getElementById('youtubeVideo').src = "";
+
+ 
 });
 </script>
 
