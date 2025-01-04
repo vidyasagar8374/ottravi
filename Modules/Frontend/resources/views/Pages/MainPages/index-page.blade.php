@@ -14,8 +14,8 @@
             </div>
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
-                    <div class="row align-items-center iq-ltr-direction h-100">
-                        <div class="col-lg-7 col-md-12">
+                    <div class="row align-items-center iq-ltr-direction h-100 pl-3">
+                        <div class="col-lg-7 col-md-12 ">
                             <h1 style="background-image: url('{{ asset('frontend/images/pages/texure.webp') }}');"
                                 class="texture-text big-font letter-spacing-1 line-count-1 text-uppercase mb-0 RightAnimate">
                                 <!-- {{__('frontendhome.another_danger')}} -->{{ $banner->title}}
@@ -186,23 +186,52 @@
 
 <script>
     
-       // YouTube video URL
-// Set YouTube video URL on modal show
-document.getElementById('videoModal').addEventListener('show.bs.modal', function (event) {
+    document.getElementById('videoModal').addEventListener('show.bs.modal', function (event) {
     // Get the button that triggered the modal
     const button = event.relatedTarget;
     
     // Extract video URL from data-url attribute
     const youtubeID = button.getAttribute('data-url');
-    // alert(youtubeID);
     const youtubeURL = 'https://www.youtube.com/embed/' + youtubeID;
-    // const youtubeURL = 'https://www.youtube.com/watch?v=YYg4BQDCBQ0';
+    
     // Set the iframe src to the video URL
     document.getElementById('youtubeVideo').src = youtubeURL;
-    document.getElementById('videoModal').addEventListener('hide.bs.modal', function () {
+
+    // Stop the carousel (pause Swiper autoplay)
+    if (window.homeBannerSlider && homeBannerSlider.autoplay) {
+        console.log("Stopping Swiper autoplay"); // Debugging
+        homeBannerSlider.autoplay.stop();
+    } else {
+        console.warn("Swiper instance not found or autoplay is not enabled");
+    }
+});
+
+document.getElementById('videoModal').addEventListener('hide.bs.modal', function () {
+    // Clear the video URL from iframe
     document.getElementById('youtubeVideo').src = "";
+
+    // Resume the carousel (start Swiper autoplay)
+    if (window.homeBannerSlider && homeBannerSlider.autoplay) {
+        console.log("Starting Swiper autoplay"); // Debugging
+        homeBannerSlider.autoplay.start();
+    } else {
+        console.warn("Swiper instance not found or autoplay is not enabled");
+    }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialize the Swiper
+    window.homeBannerSlider = new Swiper('.banner-home-swiper', {
+        loop: true,
+        autoplay: {
+            delay: 4000, // 4 seconds
+            disableOnInteraction: false,
+        },
+    });
+
+    console.log("Swiper initialized:", homeBannerSlider); // Debugging
 });
+
 
 
 
@@ -259,19 +288,8 @@ document.getElementById('videoModal').addEventListener('show.bs.modal', function
 // });
 
 
+
 </script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const homeBannerSlider = new Swiper('.banner-home-swiper', {
-            loop: true,
-            autoplay: {
-                delay: 3000, // 3 seconds
-                disableOnInteraction: false,
-            },
-           
-           
-        });
-    });
-</script>
+
 
 @endsection
