@@ -1,5 +1,25 @@
 @extends('frontend::layouts.master', ['isSwiperSlider' => true ,'bodyClass'=>"custom-header-relative","isSelect2"=>true])
 @section('content')
+<style>
+    .pd-left{
+        padding-left : 90px !important;
+    }
+    @media only screen and (max-width: 600px) {
+        .pd-left{
+        padding-left : 10px !important;
+    }
+}
+@media only screen and (min-width: 600px) {
+    .pd-left{
+        padding-left : 10px !important;
+    }
+}
+@media only screen and (min-width: 768px) {
+    .pd-left{
+        padding-left: 90px !important;
+    }
+}
+</style>
 <section id="home-banner-slider" class="iq-main-slider p-0 swiper banner-home-swiper overflow-hidden"
     data-swiper="home-banner-slider">
     <div class="slider m-0 p-0 swiper-wrapper home-slider">
@@ -14,8 +34,8 @@
             </div>
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
-                    <div class="row align-items-center iq-ltr-direction h-100 pl-3">
-                        <div class="col-lg-7 col-md-12 ">
+                    <div class="row align-items-center iq-ltr-direction h-100">
+                        <div class="col-lg-7 col-md-12 pd-left">
                             <h1 style="background-image: url('{{ asset('frontend/images/pages/texure.webp') }}');"
                                 class="texture-text big-font letter-spacing-1 line-count-1 text-uppercase mb-0 RightAnimate">
                                 <!-- {{__('frontendhome.another_danger')}} -->{{ $banner->title}}
